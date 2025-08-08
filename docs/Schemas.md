@@ -18,10 +18,10 @@ This document outlines the JSON schema structure for each scene type supported b
 ```json
 {
   "type": "object",
-  "required": ["type", "title", "subtitle", "image"],
+  "required": ["type", "title", "image"],
   "properties": {
     "type": { "const": "hero" },
-    "backgroundColor": { "type": "string", "format": "color" },
+    "backgroundColor": { "type": "string" },
     "title": { "type": "string" },
     "subtitle": { "type": "string" },
     "image": {
@@ -31,18 +31,8 @@ This document outlines the JSON schema structure for each scene type supported b
         "src": { "type": "string", "format": "uri" },
         "alt": { "type": "string" }
       }
-    },
-    "textAlign": {
-      "type": "string",
-      "enum": ["left", "center", "right"],
-      "default": "center"
-    },
-    "fontFamily": { "type": "string" },
-    "fontSize": { "type": "number" },
-    "pattern": { "type": "string" },
-    "textColor": { "type": "string", "format": "color" }
-  },
-  "additionalProperties": false
+    }
+  }
 }
 ```
 
@@ -72,8 +62,7 @@ This document outlines the JSON schema structure for each scene type supported b
       }
     },
     "columns": { "type": "integer", "default": 2 },
-    "backgroundColor": { "type": "string", "format": "color" },
-    "pattern": { "type": "string" }
+    "backgroundColor": { "type": "string", "format": "color" }
   },
   "additionalProperties": false
 }
@@ -93,10 +82,7 @@ This document outlines the JSON schema structure for each scene type supported b
     "type": { "const": "callout" },
     "text": { "type": "string" },
     "icon": { "type": "string" },
-    "color": { "type": "string", "format": "color" },
-    "textColor": { "type": "string", "format": "color" },
-    "pattern": { "type": "string" },
-    "fontSize": { "type": "number" }
+    "color": { "type": "string", "format": "color" }
   },
   "additionalProperties": false
 }
@@ -104,4 +90,4 @@ This document outlines the JSON schema structure for each scene type supported b
 
 ---
 
-Additional schemas will follow the same rules: strongly typed, no extraneous properties, and custom visual configuration support (font, color, pattern, etc.).
+Additional schemas will follow the same rules: strongly typed with no extraneous properties.
