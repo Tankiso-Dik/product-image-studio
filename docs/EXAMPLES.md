@@ -1,47 +1,107 @@
-# Scene Data Examples
+# Examples
 
-The `public/sceneData/` folder contains JSON files that feed the layout engine. Each file matches a schema in `/schemas/`.
+This document contains real, minimal, and complete example JSON configurations for each available scene type. These examples are used to:
 
-## Hero
+* Verify JSON schema and validator behavior
+* Guide GPTs in generating scene data
+* Help users understand the expected structure
+
+---
+
+## Hero Scene
+
 ```json
 {
   "type": "hero",
-  "title": "Welcome to Product Image Studio",
-  "subtitle": "Your personal visual engine",
-  "backgroundColor": "#fef9f4",
+  "backgroundColor": "#f0f9f4",
+  "title": "Your Goals, Visualized",
+  "subtitle": "Notion templates to help you win the day.",
   "image": {
-    "src": "https://placehold.co/800x400?text=Mock+Screenshot",
-    "alt": "Example template screenshot"
+    "src": "https://example.com/image.png",
+    "alt": "Mockup of dashboard"
   }
 }
 ```
 
-## Notion Dashboard
+---
+
+## Feature Grid Scene
+
 ```json
 {
-  "type": "notionDashboard",
-  "mainHeading": "Plan without burnout",
-  "subHeading": "This dashboard helps you pace the journey",
-  "browserUrl": "mondaychick.co",
-  "dashboardTitle": "My Weekly Planner",
-  "sections": [
+  "type": "featureGrid",
+  "backgroundColor": "#ffffff",
+  "title": "Everything You Need",
+  "features": [
     {
-      "title": "This Week's Focus",
-      "emoji": "",
-      "items": [
-        { "text": "Review project roadmap", "checked": true },
-        { "text": "Schedule team check-ins", "checked": false },
-        { "text": "Prepare presentation slides", "checked": false }
-      ]
+      "icon": "check-circle",
+      "title": "Goal Tracker",
+      "description": "Stay on top of your short- and long-term goals."
     },
     {
-      "title": "Energy Management",
-      "emoji": "",
-      "items": [
-        { "text": "Morning meditation (15 min)", "checked": true },
-        { "text": "Take lunch break away from desk", "checked": false }
-      ]
+      "icon": "calendar",
+      "title": "Habit Logs",
+      "description": "Track your daily routines with ease."
     }
   ]
 }
 ```
+
+---
+
+## Testimonial Scene
+
+```json
+{
+  "type": "testimonial",
+  "backgroundColor": "#fef7f0",
+  "quote": "This template changed how I plan my entire week!",
+  "author": "Lynn R.",
+  "role": "Notion Seller",
+  "avatar": "https://example.com/avatar.png"
+}
+```
+
+---
+
+## Split Layout Scene
+
+```json
+{
+  "type": "splitLayout",
+  "backgroundColor": "#f9f9f9",
+  "title": "Plan. Review. Repeat.",
+  "text": "Each page in this template is designed with intention.",
+  "image": {
+    "src": "https://example.com/side-by-side.png",
+    "alt": "Side-by-side of template sections"
+  },
+  "reverse": false
+}
+```
+
+---
+
+## Image Showcase Scene
+
+```json
+{
+  "type": "imageShowcase",
+  "backgroundColor": "#ffffff",
+  "title": "Visual Walkthrough",
+  "images": [
+    {
+      "src": "https://example.com/ss1.png",
+      "alt": "First dashboard page"
+    },
+    {
+      "src": "https://example.com/ss2.png",
+      "alt": "Second dashboard page"
+    }
+  ]
+}
+```
+
+---
+
+Each of these examples maps directly to a schema file inside `/schemas/` and a component inside `/src/components/`. They can be validated with Ajv and used in prompt recipes.
