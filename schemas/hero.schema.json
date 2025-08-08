@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Hero Scene",
+  "description": "Schema for a hero scene component",
+  "type": "object",
+  "properties": {
+    "type": {
+      "description": "The type of the scene, must be 'hero'.",
+      "type": "string",
+      "const": "hero"
+    },
+    "title": {
+      "description": "The main title of the hero scene.",
+      "type": "string"
+    },
+    "subtitle": {
+      "description": "The subtitle or secondary text.",
+      "type": "string"
+    },
+    "backgroundColor": {
+      "description": "The background color of the scene, as a CSS color string.",
+      "type": "string"
+    },
+    "image": {
+      "description": "The main image or screenshot for the scene.",
+      "type": "object",
+      "properties": {
+        "src": {
+          "description": "The URL or path to the image.",
+          "type": "string",
+          "format": "uri"
+        },
+        "alt": {
+          "description": "Alternative text for the image.",
+          "type": "string"
+        }
+      },
+      "required": ["src"]
+    }
+  },
+  "required": ["type", "title", "image"]
+}

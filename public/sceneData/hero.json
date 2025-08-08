@@ -1,0 +1,10 @@
+{
+  "type": "hero",
+  "title": "Welcome to Product Image Studio",
+  "subtitle": "Your personal visual engine",
+  "backgroundColor": "#fef9f4",
+  "image": {
+    "src": "https://placehold.co/800x400?text=Mock+Screenshot",
+    "alt": "Example template screenshot"
+  }
+}
