@@ -1,6 +1,6 @@
 # 📐 Scene Definitions
 
-This document defines the **structure** and **schema** for each planned scene type. Each scene type has:
+This document defines the **structure** and **schema** for each implemented scene type. Each scene type has:
 
 * A unique JSON schema
 * A matching React component
@@ -13,6 +13,9 @@ All scene data is passed via JSON to ensure compatibility with GPT-driven creati
 ## ✅ Scene: Hero
 
 **Purpose:** Main splash scene with product name, subtitle, and centered screenshot.
+
+**Schema:** [hero.schema.json](../schemas/hero.schema.json)
+**Component:** [Hero.tsx](../src/components/Hero.tsx)
 
 **JSON Structure:**
 
@@ -32,112 +35,65 @@ All scene data is passed via JSON to ensure compatibility with GPT-driven creati
 **Props:**
 
 * `backgroundColor`: Hex color string
-* `title`: string
+* `title`: string (required)
 * `subtitle`: string
-* `image.src`: URL
+* `image.src`: URL (required)
 * `image.alt`: string
 
 ---
 
-## 🪞 Scene: SideBySide
+## 🗂️ Scene: Notion Dashboard
 
-**Purpose:** Two-column layout with text on one side and image on the other.
+**Purpose:** Displays a Notion-like dashboard inside a styled browser frame with sections of items.
 
-**JSON Structure:**
-
-```json
-{
-  "type": "sideBySide",
-  "backgroundColor": "#fff",
-  "leftText": "...",
-  "rightImage": {
-    "src": "...",
-    "alt": "..."
-  },
-  "reverse": false
-}
-```
-
-**Props:**
-
-* `leftText`: Markdown allowed
-* `rightImage.src`
-* `rightImage.alt`
-* `reverse`: if true, flips image/text
-
----
-
-## 💬 Scene: Quote
-
-**Purpose:** Stylish callout with large quote text and attribution
+**Schema:** [notionDashboard.schema.json](../schemas/notionDashboard.schema.json)
+**Component:** [NotionDashboard.tsx](../src/components/NotionDashboard.tsx)
 
 **JSON Structure:**
 
 ```json
 {
-  "type": "quote",
-  "quote": "Design is the silent ambassador of your brand.",
-  "author": "Paul Rand",
-  "backgroundPattern": "grunge-01.svg"
-}
-```
-
-**Props:**
-
-* `quote`: large stylized text
-* `author`: caption
-* `backgroundPattern`: local asset name (SVG)
-
----
-
-## 🖼️ Scene: Gallery
-
-**Purpose:** Grid of 3–6 mockups, each with optional label
-
-**JSON Structure:**
-
-```json
-{
-  "type": "gallery",
-  "images": [
-    { "src": "...", "alt": "...", "caption": "..." },
-    ...
+  "type": "notionDashboard",
+  "mainHeading": "Plan without burnout",
+  "subHeading": "This dashboard helps you pace the journey",
+  "browserUrl": "https://example.com",
+  "dashboardTitle": "My Weekly Planner",
+  "sections": [
+    {
+      "title": "This Week's Focus",
+      "emoji": "🔥",
+      "items": [
+        { "text": "Review project roadmap", "checked": true },
+        { "text": "Schedule team check-ins", "checked": false }
+      ]
+    }
   ]
 }
 ```
 
 **Props:**
 
-* `images[]`: must be between 3–6 items
-* `caption`: optional
+* `mainHeading`: string
+* `subHeading`: string
+* `browserUrl`: URL
+* `dashboardTitle`: string
+* `sections[]`: array of sections
+  * `title`: string
+  * `emoji`: string
+  * `items[]`: array of items
+    * `text`: string
+    * `checked`: boolean
 
 ---
 
-## 🧠 Scene: FeatureList
+## Planned Scenes
 
-**Purpose:** Bullet-style benefits list with checkmarks or icons
+The following scene types are planned but not yet implemented:
 
-**JSON Structure:**
-
-```json
-{
-  "type": "featureList",
-  "title": "Why you'll love it",
-  "features": ["Fast", "Minimal setup", "Beautiful visuals"],
-  "iconStyle": "check" // or "star", "bolt"
-}
-```
-
-**Props:**
-
-* `title`: string
-* `features[]`: list of strings
-* `iconStyle`: preset
-
----
-
-## Coming Soon
-
+* `sideBySide`
+* `quote`
+* `gallery`
+* `featureList`
 * `testimonialGrid`
 * `pricingBlock`
 * `callToAction`
@@ -145,5 +101,5 @@ All scene data is passed via JSON to ensure compatibility with GPT-driven creati
 Each new scene must:
 
 * Have a schema in `schemas/`
-* Be registered in scene loader
+* Be registered in the scene loader
 * Be documented in this file
