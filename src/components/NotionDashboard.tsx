@@ -1,23 +1,8 @@
 import React from 'react';
-
-interface SceneData {
-  type: 'notionDashboard';
-  mainHeading: string;
-  subHeading: string;
-  browserUrl: string;
-  dashboardTitle: string;
-  sections: Array<{
-    title: string;
-    emoji: string;
-    items: Array<{
-      text: string;
-      checked: boolean;
-    }>;
-  }>;
-}
+import type { NotionDashboardScene } from '../types/notionDashboard';
 
 interface NotionDashboardProps {
-  scene: SceneData;
+  scene: NotionDashboardScene;
 }
 
 const NotionDashboard: React.FC<NotionDashboardProps> = ({ scene }) => {

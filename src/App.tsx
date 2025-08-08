@@ -5,25 +5,9 @@ import addFormats from 'ajv-formats';
 // Import the component and the local JSON files
 import NotionDashboard from './components/NotionDashboard';
 import notionDashboardSchema from '../schemas/notionDashboard.schema.json';
+import type { NotionDashboardScene } from './types/notionDashboard';
 
-// Define the shape of our scene data
-interface NotionDashboardSceneData {
-  type: 'notionDashboard';
-  mainHeading: string;
-  subHeading: string;
-  browserUrl: string;
-  dashboardTitle: string;
-  sections: Array<{
-    title: string;
-    emoji: string;
-    items: Array<{
-      text: string;
-      checked: boolean;
-    }>;
-  }>;
-}
-
-type SceneData = NotionDashboardSceneData;
+type SceneData = NotionDashboardScene;
 
 function App() {
   const [sceneData, setSceneData] = useState<SceneData | null>(null);
