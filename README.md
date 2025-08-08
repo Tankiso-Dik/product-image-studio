@@ -17,6 +17,7 @@ src/             React components and application code
 ```
 Additional reference docs live under `docs/`:
 - [SCENES.md](docs/SCENES.md) – schema/component specs
+- [SCHEMAS.md](docs/SCHEMAS.md) – JSON schema definitions
 - [THEMES.md](docs/THEMES.md) – theme assets and tokens
 - [EXAMPLES.md](docs/EXAMPLES.md) – sample `sceneData` files
 - [USAGE.md](docs/USAGE.md) – manual & GPT workflow
