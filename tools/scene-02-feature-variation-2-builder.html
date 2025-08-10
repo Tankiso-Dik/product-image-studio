@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scene 02 Variation 2 Builder</title>
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/builder.css">
+  </head>
+  <body class="builder-page">
+    <main class="builder-container">
+      <h1 class="builder-title">Scene 02 — Variation 2 (Two Steps)</h1>
+      <form class="builder-form" onsubmit="return false;">
+        <div class="field">
+          <label for="url">URL (address bar)</label>
+          <input type="text" id="url" placeholder="example.com" value="example.com">
+        </div>
+        <div class="field">
+          <label for="title">Main Heading</label>
+          <input type="text" id="title" placeholder="Your Product Name" value="Make progress visible">
+        </div>
+        <div class="field">
+          <label for="subtitle">Subheading</label>
+          <input type="text" id="subtitle" placeholder="A simple system that rewards steady wins" value="A simple system that rewards steady wins">
+        </div>
+        <div class="field">
+          <label for="image1">Step 1 Screenshot (URL)</label>
+          <input type="text" id="image1" placeholder="assets/screenshots/step1.png">
+        </div>
+        <div class="field">
+          <label for="imageFile1">Or pick a file</label>
+          <input type="file" id="imageFile1" accept="image/*">
+        </div>
+        <div class="field">
+          <label for="label1">Step 1 Label</label>
+          <input type="text" id="label1" placeholder="Step" value="Step">
+        </div>
+        <div class="field">
+          <label for="image2">Step 2 Screenshot (URL)</label>
+          <input type="text" id="image2" placeholder="assets/screenshots/step2.png">
+        </div>
+        <div class="field">
+          <label for="imageFile2">Or pick a file</label>
+          <input type="file" id="imageFile2" accept="image/*">
+        </div>
+        <div class="field">
+          <label for="label2">Step 2 Label</label>
+          <input type="text" id="label2" placeholder="Step" value="Step">
+        </div>
+        <div class="actions">
+          <button id="applyBtn" type="button">Apply</button>
+          <a id="openScene" href="/scenes/02-feature-variation-2.html" target="_blank">Open Scene</a>
+        </div>
+      </form>
+    </main>
+    <script>
+      const q = (id)=>document.getElementById(id);
+      const toDataURL = (file)=> new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(file) });
+      async function payload(){
+        const p={
+          scene: '02-feature-variation-2',
+          addressBar: (q('url').value||'').trim(),
+          mainHeading: (q('title').value||'').trim(),
+          subHeading: (q('subtitle').value||'').trim(),
+          browserScreenshot1: (q('image1').value||'').trim(),
+          stepLabel1: (q('label1').value||'').trim(),
+          browserScreenshot2: (q('image2').value||'').trim(),
+          stepLabel2: (q('label2').value||'').trim()
+        };
+        const f1=q('imageFile1')?.files?.[0]; if(f1){ try{ p.browserScreenshot1=await toDataURL(f1) }catch(e){} }
+        const f2=q('imageFile2')?.files?.[0]; if(f2){ try{ p.browserScreenshot2=await toDataURL(f2) }catch(e){} }
+        return p;
+      }
+      q('applyBtn').addEventListener('click', async ()=>{
+        const body = await payload();
+        const res = await fetch('/api/compose', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+        const html = await res.text();
+        const compose = window.open('/scenes/02-feature-variation-2.html', '_blank');
+        const w = compose || window; w.document.open(); w.document.write(html); w.document.close();
+      });
+    </script>
+  </body>
+</html>

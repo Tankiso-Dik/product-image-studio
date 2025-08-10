@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scene 01 Builder</title>
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/builder.css">
+  </head>
+  <body class="builder-page">
+    <main class="builder-container">
+      <h1 class="builder-title">Scene 01 — Single Screenshot</h1>
+      <form class="builder-form" onsubmit="return false;">
+        <div class="field">
+          <label for="url">URL (address bar)</label>
+          <input type="text" id="url" placeholder="example.com" value="example.com">
+        </div>
+        <div class="field">
+          <label for="title">Main Heading</label>
+          <input type="text" id="title" placeholder="Your Product Name" value="Your Product Name">
+        </div>
+        <div class="field">
+          <label for="subtitle">Subheading</label>
+          <input type="text" id="subtitle" placeholder="Concise, compelling subheading">
+        </div>
+        <div class="field">
+          <label for="icon">Brand Icon URL</label>
+          <input type="url" id="icon" placeholder="https://.../icon.svg" value="http://upload.wikimedia.org/wikipedia/commons/e/e9/Notion-logo.svg">
+        </div>
+        <div class="field">
+          <label for="image">Screenshot Path or URL</label>
+          <input type="text" id="image" placeholder="assets/screenshots/shot.png" value="assets/screenshots/placeholder.png">
+        </div>
+        <div class="field">
+          <label for="imageFile">Or pick a screenshot file</label>
+          <input type="file" id="imageFile" accept="image/*">
+        </div>
+        <div class="actions">
+          <button id="applyBtn" type="button">Apply</button>
+          <a id="openScene" href="/scenes/01-thumbnail.html" target="_blank">Open Scene</a>
+        </div>
+      </form>
+    </main>
+    <script>
+      const q = (id)=>document.getElementById(id);
+      const toDataURL = (file)=> new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(file) });
+      async function payload(){
+        const p={
+          scene: '01-thumbnail',
+          addressBar: (q('url').value||'').trim(),
+          mainHeading: (q('title').value||'').trim(),
+          subHeading: (q('subtitle').value||'').trim(),
+          brandIcon: (q('icon').value||'').trim(),
+          browserScreenshot: (q('image').value||'').trim()
+        };
+        const f=q('imageFile')?.files?.[0]; if(f){ try{ p.browserScreenshot=await toDataURL(f) }catch(e){} }
+        return p;
+      }
+      q('applyBtn').addEventListener('click', async ()=>{
+        const body = await payload();
+        const res = await fetch('/api/compose', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+        const html = await res.text();
+        const compose = window.open('/scenes/01-thumbnail.html', '_blank');
+        const w = compose || window;
+        w.document.open();
+        w.document.write(html);
+        w.document.close();
+      });
+    </script>
+  </body>
+</html>

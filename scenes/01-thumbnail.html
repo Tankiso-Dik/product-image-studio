@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scene 01 - Thumbnail</title>
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/theme.css">
+    <link rel="stylesheet" href="../assets/css/mockup.css">
+</head>
+<body>
+    <div class="scene-container" data-key="themeColor">
+
+        <!-- Theme selector -->
+        <div class="theme-controls" data-key="theme">
+            <div class="theme-toggle">
+                <div class="theme-dot green active" aria-label="Theme green"></div>
+                <div class="theme-dot yellow" aria-label="Theme yellow"></div>
+                <div class="theme-dot purple" aria-label="Theme purple"></div>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Browser mockup -->
+            <div class="browser-mockup">
+                <div class="browser-chrome">
+                    <div class="window-controls">
+                        <div class="window-control close"></div>
+                        <div class="window-control minimize"></div>
+                        <div class="window-control maximize"></div>
+                    </div>
+                    <input type="text" class="address-bar" data-key="addressBar" value="example.com" readonly>
+                </div>
+
+                <!-- Screenshot area inside the browser frame (no mock UI) -->
+                <div class="screenshot-wrap">
+                    <img
+                        class="browser-screenshot"
+                        data-key="browserScreenshot"
+                        src="../assets/screenshots/placeholder.png"
+                        alt="Screenshot placeholder"
+                    />
+                </div>
+            </div>
+
+            <!-- Headings -->
+            <div class="heading-wrap">
+                <img class="brand-icon notion-icon" data-key="brandIcon" src="http://upload.wikimedia.org/wikipedia/commons/e/e9/Notion-logo.svg" alt="Brand icon">
+                <h1 class="main-heading" data-key="mainHeading">Your Product Name</h1>
+            </div>
+            <p class="sub-heading" data-key="subHeading">Concise, compelling subheading goes here</p>
+
+            <!-- Sections container injected by builder -->
+            <div class="dashboard-sections" data-key="sections"></div>
+        </div>
+
+        <!-- Floating orbs -->
+        <div class="floating-orb orb-1"></div>
+        <div class="floating-orb orb-2"></div>
+    </div>
+</body>
+</html>

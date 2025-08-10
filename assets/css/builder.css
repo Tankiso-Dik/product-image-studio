@@ -1,0 +1,39 @@
+/* Minimal styles for the scene builder UI */
+.builder-container {
+  max-width: 820px;
+  margin: 32px auto 60px;
+  padding: 0 18px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.builder-title { font-size: 28px; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.01em; }
+.builder-note { color: #475569; margin-bottom: 20px; }
+
+.builder-form { display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; }
+.field.two-col { grid-template-columns: 1fr 1fr; gap: 10px; }
+.field label { font-weight: 600; color: #111827; }
+.field input, .field select {
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+}
+.hint { color: #6b7280; font-size: 12px; }
+
+.preview { margin-top: 8px; max-width: 100%; height: auto; border: 1px solid #e5e7eb; border-radius: 8px; }
+
+.actions { display: flex; gap: 10px; }
+#previewBtn, #pngBtn { padding: 12px 14px; border-radius: 10px; border: 1px solid #d1d5db; background: white; cursor: pointer; font-weight: 600; }
+#previewBtn:hover, #pngBtn:hover { border-color: #cbd5e1; box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+/* Reset base scene constraints for the builder page */
+html, body.builder-page { height: auto; }
+.builder-page {
+  display: block;            /* cancel base.css flex layout */
+  min-height: 100vh;
+  overflow: auto;            /* allow scrolling */
+  align-items: initial;      /* cancel base.css centering */
+  justify-content: initial;  /* cancel base.css centering */
+  padding: 24px 0;           /* slimmer vertical padding */
+}
+.builder-page::after { display: none; } /* disable noise overlay */

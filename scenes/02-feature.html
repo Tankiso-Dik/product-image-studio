@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scene 02 - Feature Highlight</title>
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <link rel="stylesheet" href="../assets/css/mockup.css" />
+</head>
+<body data-theme="purple">
+  <div class="scene-container">
+
+    <!-- Theme dots (visual only) -->
+    <div class="theme-controls" data-key="theme">
+      <div class="theme-toggle">
+        <div class="theme-dot green"></div>
+        <div class="theme-dot yellow"></div>
+        <div class="theme-dot purple active"></div>
+      </div>
+    </div>
+
+    <div class="content-wrapper">
+      <!-- Browser mockup -->
+      <div class="browser-mockup">
+        <div class="browser-chrome">
+          <div class="window-controls">
+            <div class="window-control close"></div>
+            <div class="window-control minimize"></div>
+            <div class="window-control maximize"></div>
+          </div>
+          <input
+            type="text"
+            class="address-bar"
+            data-key="addressBar"
+            value="mondaychick.co"
+            readonly
+            aria-label="Address bar"
+          >
+        </div>
+
+        <div class="dashboard-content">
+          <header class="dashboard-header">
+            <div class="page-icon">✨</div>
+            <h2 class="page-title">Feature Spotlight</h2>
+          </header>
+          <div class="screenshot-grid">
+            <img class="browser-screenshot left" data-key="browserScreenshotLeft" src="../assets/screenshots/placeholder.png" alt="Left screenshot placeholder" />
+            <img class="browser-screenshot right" data-key="browserScreenshotRight" src="../assets/screenshots/placeholder.png" alt="Right screenshot placeholder" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Headings -->
+      <h1 class="main-heading" data-key="mainHeading">Make progress visible</h1>
+      <p class="sub-heading" data-key="subHeading">A simple system that rewards steady wins</p>
+    </div>
+
+    <!-- Standalone screenshot element not used in this scene -->
+
+    <!-- Orbs -->
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scene Builder</title>
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/builder.css">
+  </head>
+  <body class="builder-page">
+    <main class="builder-container">
+      <h1 class="builder-title">Deprecated Scene Builder (use per-scene builders)</h1>
+      <p class="builder-note">Fill the fields below. Use the buttons to preview or download.</p>
+
+      <form class="builder-form" id="builderForm" onsubmit="return false;">
+        <div class="field">
+          <label for="sceneSelect">Scene</label>
+          <select id="sceneSelect"></select>
+        </div>
+
+        <div class="field two-col">
+          <div>
+            <label for="width">Width</label>
+            <input type="number" id="width" value="1600" min="320">
+          </div>
+          <div>
+            <label for="height">Height</label>
+            <input type="number" id="height" value="900" min="200">
+          </div>
+        </div>
+        <!-- Deprecated manual scene path field removed in favor of select -->
+
+        <div class="field">
+          <label for="url">URL (address bar)</label>
+          <input type="text" id="url" placeholder="example.com" value="example.com">
+        </div>
+
+        <div class="field">
+          <label for="title">Your Product Name</label>
+          <input type="text" id="title" placeholder="Your Product Name" value="Your Product Name">
+          <small class="hint">Long names wrap beneath; icon stays beside the first line.</small>
+        </div>
+
+        <div class="field">
+          <label for="subtitle">Concise, compelling subheading</label>
+          <input type="text" id="subtitle" placeholder="Concise, compelling subheading goes here" value="Concise, compelling subheading goes here">
+        </div>
+
+        <div class="field">
+          <label for="icon">Brand Icon URL</label>
+          <input type="url" id="icon" placeholder="https://.../icon.svg" value="http://upload.wikimedia.org/wikipedia/commons/e/e9/Notion-logo.svg">
+          <small class="hint">Shown to the left of the product name.</small>
+        </div>
+
+        <div class="field">
+          <label for="image">Screenshot Path or URL</label>
+          <input type="text" id="image" placeholder="assets/screenshots/shot.png" value="assets/screenshots/placeholder.png">
+          <small class="hint">Recommended: 1200x675 (16:9) PNG/JPG for best fit.</small>
+        </div>
+
+        <div class="field">
+          <label for="imageFile">Or pick a screenshot file</label>
+          <input type="file" id="imageFile" accept="image/*">
+          <small class="hint">Selected file will be referenced as <code>assets/screenshots/&lt;filename&gt;</code>. Move the file there before running.</small>
+          <img id="imagePreview" class="preview" alt="Screenshot preview" hidden>
+        </div>
+
+        <div class="field">
+          <label for="imageLeft">Left Screenshot (Scene 02)</label>
+          <input type="text" id="imageLeft" placeholder="assets/screenshots/shot-left.png">
+        </div>
+        <div class="field">
+          <label for="imageFileLeft">Or pick a left image file</label>
+          <input type="file" id="imageFileLeft" accept="image/*">
+          <img id="imagePreviewLeft" class="preview" alt="Left screenshot preview" hidden>
+        </div>
+
+        <div class="field">
+          <label for="imageRight">Right Screenshot (Scene 02)</label>
+          <input type="text" id="imageRight" placeholder="assets/screenshots/shot-right.png">
+        </div>
+        <div class="field">
+          <label for="imageFileRight">Or pick a right image file</label>
+          <input type="file" id="imageFileRight" accept="image/*">
+          <img id="imagePreviewRight" class="preview" alt="Right screenshot preview" hidden>
+        </div>
+
+        <div class="field">
+          <label for="bgcolor">Background Color (hex or css color)</label>
+          <input type="text" id="bgcolor" placeholder="#10b981 or rgb(...) or var(--token)">
+          <small class="hint">Stored for future themes; current scene still uses preset gradients.</small>
+        </div>
+
+        <div class="field">
+          <label for="theme">Preset Theme</label>
+          <select id="theme">
+            <option value="green">green</option>
+            <option value="yellow">yellow</option>
+            <option value="purple">purple</option>
+          </select>
+          <small class="hint">Select the active dot; optional if using custom color later.</small>
+        </div>
+
+        <div class="output">
+          <div class="actions">
+            <a class="button" href="/tools/scene-01-builder.html">Scene 01 Builder</a>
+            <a class="button" href="/tools/scene-02-builder.html">Scene 02 Builder</a>
+          </div>
+          <small class="hint">Use the per‑scene builders above.</small>
+        </div>
+      </form>
+    </main>
+
+    <script src="../assets/js/builder.js"></script>
+  </body>
+  </html>
