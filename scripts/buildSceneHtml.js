@@ -99,9 +99,17 @@ function buildSceneHtml({ repoRoot, sceneHtmlPath, controllers, sceneJsonPath, o
         html = html.replace(labelRe, (_, a, _b, c) => `${a}${htmlEscape(data[labelKey])}${c}`);
       }
       const textKey = `stepText${i}`;
-      if (data[textKey]) {
+      if (Object.prototype.hasOwnProperty.call(data, textKey)) {
         const textRe = new RegExp(`(<[^>]*data-key=\"${textKey}\"[^>]*>)([\s\S]*?)(<\/[^>]+>)`);
-        html = html.replace(textRe, (_, a, _b, c) => `${a}${htmlEscape(data[textKey])}${c}`);
+        html = html.replace(textRe, (_, a, _b, c) => `${a}${htmlEscape(data[textKey] || '')}${c}`);
+      }
+    }
+    // Ensure explicit overrides for step text are applied
+    for (let i = 1; i <= 4; i++) {
+      const key = `stepText${i}`;
+      if (Object.prototype.hasOwnProperty.call(overrides, key)) {
+        const textRe = new RegExp(`(<[^>]*data-key=\"${key}\"[^>]*>)([\s\S]*?)(<\/[^>]+>)`);
+        html = html.replace(textRe, (_, a, _b, c) => `${a}${htmlEscape(overrides[key] || '')}${c}`);
       }
     }
     // Toggle single screenshot visibility flag on <body> when not using placeholder

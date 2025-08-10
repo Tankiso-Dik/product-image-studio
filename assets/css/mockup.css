@@ -115,8 +115,7 @@
   display: none; /* Hidden by default unless screenshot is injected */
   width: 100%;
   height: auto;
-  border-bottom-left-radius: var(--radius-frame);
-  border-bottom-right-radius: var(--radius-frame);
+  border-radius: var(--radius-frame);
 }
 .scene-container + .browser-screenshot { display: none; }
 [data-has-screenshot="true"] .browser-screenshot { display: block; }
@@ -156,6 +155,7 @@
 }
 .screenshot-grid .browser-screenshot {
   display: none;
+  border-radius: var(--radius-card);
 }
 [data-has-screenshot-left="true"] .screenshot-grid .browser-screenshot.left { display: block; }
 [data-has-screenshot-right="true"] .screenshot-grid .browser-screenshot.right { display: block; }
@@ -167,17 +167,21 @@
   gap: 10px;
   margin-top: 8px;
 }
+[data-has-screenshot-1="true"]:not([data-has-screenshot-2]):not([data-has-screenshot-3]):not([data-has-screenshot-4]) .howto-grid {
+  grid-template-columns: 1fr;
+}
 .howto-item {
   background: rgba(255,255,255,0.7);
   border: 1px solid rgba(0,0,0,0.06);
   border-radius: var(--radius-card);
   padding: 8px;
+  width: auto;
 }
 .howto-item .browser-screenshot {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 10px; /* rounded on all corners */
+  border-radius: var(--radius-card); /* rounded on all corners */
   box-shadow: var(--shadow-soft);
 }
 .step-label {
