@@ -279,3 +279,73 @@
   text-align: center;
   max-width: 720px;
 }
+
+/* Scene 01 specific polish */
+.scene-01 .browser-mockup {
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: 0 40px 60px rgba(0,0,0,0.15), 0 12px 20px rgba(0,0,0,0.08);
+}
+
+.scene-01 .browser-mockup::before {
+  background: linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0) 40%);
+}
+
+.scene-01 .screenshot-wrap {
+  border-radius: var(--radius-frame);
+  padding: 4px;
+  aspect-ratio: 16/9;
+  background: rgba(0,0,0,0.02);
+}
+
+.scene-01 .browser-screenshot {
+  border-radius: calc(var(--radius-frame) - 4px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.08);
+}
+
+.scene-01 .browser-screenshot.fade-in {
+  opacity: 0;
+  animation: scene01-fade-in 0.6s ease forwards;
+}
+
+@keyframes scene01-fade-in {
+  to { opacity: 1; }
+}
+
+.scene-01 .content-wrapper {
+  gap: 32px;
+}
+
+.scene-01 .heading-wrap {
+  gap: 16px;
+}
+
+.scene-01 .main-heading {
+  font-weight: 700;
+  color: var(--text-strong);
+  background: none;
+}
+
+.scene-01 .sub-heading {
+  font-weight: 300;
+  color: var(--text-muted);
+}
+
+@media (prefers-color-scheme: dark) {
+  .scene-01 .browser-mockup {
+    background: rgba(30,41,59,0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .scene-01 .browser-mockup::before {
+    background: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0) 40%);
+  }
+
+  .scene-01 .main-heading {
+    color: #f8fafc;
+  }
+
+  .scene-01 .sub-heading {
+    color: #cbd5e1;
+  }
+}
