@@ -35,6 +35,10 @@
           <label for="label1">Step 1 Label</label>
           <input type="text" id="label1" placeholder="Step" value="Step">
         </div>
+        <div class="field">
+          <label for="text1">Step 1 Instruction</label>
+          <input type="text" id="text1" placeholder="Short instruction goes here">
+        </div>
         <div class="actions">
           <button id="applyBtn" type="button">Apply</button>
           <a id="openScene" href="/scenes/02-feature-variation-1.html" target="_blank">Open Scene</a>
@@ -51,7 +55,8 @@
           mainHeading: (q('title').value||'').trim(),
           subHeading: (q('subtitle').value||'').trim(),
           browserScreenshot1: (q('image1').value||'').trim(),
-          stepLabel1: (q('label1').value||'').trim()
+          stepLabel1: (q('label1').value||'').trim(),
+          stepText1: (q('text1').value||'').trim()
         };
         const f=q('imageFile1')?.files?.[0]; if(f){ try{ p.browserScreenshot1=await toDataURL(f) }catch(e){} }
         return p;

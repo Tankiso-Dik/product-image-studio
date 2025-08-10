@@ -1,7 +1,12 @@
 {
   "theme": "purple",
   "addressBar": "mondaychick.co",
-  "browserScreenshot": "../assets/screenshots/placeholder.png",
+  "browserScreenshot1": "../assets/screenshots/placeholder.png",
+  "browserScreenshot2": "../assets/screenshots/placeholder.png",
+  "stepLabel1": "Step",
+  "stepText1": "Short instruction goes here",
+  "stepLabel2": "Step",
+  "stepText2": "Short instruction goes here",
   "mainHeading": "Make progress visible",
   "subHeading": "A simple system that rewards steady wins"
 }

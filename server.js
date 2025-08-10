@@ -43,6 +43,14 @@ app.get('/api/compose', (req, res) => {
     theme: req.query.background,
     themeColor: req.query.bgcolor,
   };
+  for (let i = 1; i <= 4; i++) {
+    const bs = req.query[`browserScreenshot${i}`];
+    const sl = req.query[`stepLabel${i}`];
+    const st = req.query[`stepText${i}`];
+    if (bs) controllers[`browserScreenshot${i}`] = bs;
+    if (sl) controllers[`stepLabel${i}`] = sl;
+    if (st) controllers[`stepText${i}`] = st;
+  }
   const html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.send(html);
@@ -65,7 +73,28 @@ app.post('/api/compose', (req, res) => {
       theme: body.theme || body.background,
       themeColor: body.themeColor || body.bgcolor,
     };
-    const html = buildSceneHtml({ sceneJsonPath: sceneJson, overrides });
+    for (let i = 1; i <= 4; i++) {
+      const bs = body[`browserScreenshot${i}`];
+      const sl = body[`stepLabel${i}`];
+      const st = body[`stepText${i}`];
+      if (bs) overrides[`browserScreenshot${i}`] = bs;
+      if (sl) overrides[`stepLabel${i}`] = sl;
+      if (st) overrides[`stepText${i}`] = st;
+    }
+    Object.keys(overrides).forEach((k) => overrides[k] == null && delete overrides[k]);
+    let html = buildSceneHtml({ sceneJsonPath: sceneJson, overrides });
+    for (let i = 1; i <= 4; i++) {
+      const label = body[`stepLabel${i}`];
+      if (label) {
+        const re = new RegExp(`(<[^>]*data-key=\"stepLabel${i}\"[^>]*>)([\\s\\S]*?)(<\/[^>]+>)`);
+        html = html.replace(re, (_, a, _b, c) => `${a}${label}${c}`);
+      }
+      const text = body[`stepText${i}`];
+      if (text) {
+        const re = new RegExp(`(<[^>]*data-key=\"stepText${i}\"[^>]*>)([\\s\\S]*?)(<\/[^>]+>)`);
+        html = html.replace(re, (_, a, _b, c) => `${a}${text}${c}`);
+      }
+    }
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     return res.send(html);
   }
@@ -80,6 +109,14 @@ app.post('/api/compose', (req, res) => {
     theme: body.background,
     themeColor: body.bgcolor,
   };
+  for (let i = 1; i <= 4; i++) {
+    const bs = body[`browserScreenshot${i}`];
+    const sl = body[`stepLabel${i}`];
+    const st = body[`stepText${i}`];
+    if (bs) controllers[`browserScreenshot${i}`] = bs;
+    if (sl) controllers[`stepLabel${i}`] = sl;
+    if (st) controllers[`stepText${i}`] = st;
+  }
   const html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.send(html);
