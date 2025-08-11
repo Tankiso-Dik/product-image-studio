@@ -12,6 +12,10 @@
       <h1 class="builder-title">Scene 02 — Feature Spotlight</h1>
       <form class="builder-form" onsubmit="return false;">
         <div class="field">
+          <label for="theme">Theme</label>
+          <input type="text" id="theme" placeholder="green | yellow | purple" value="purple">
+        </div>
+        <div class="field">
           <label for="url">URL (address bar)</label>
           <input type="text" id="url" placeholder="example.com" value="example.com">
         </div>
@@ -54,6 +58,7 @@
           addressBar: (q('url').value||'').trim(),
           mainHeading: (q('title').value||'').trim(),
           subHeading: (q('subtitle').value||'').trim(),
+          theme: (q('theme').value||'').trim(),
           browserScreenshot: (q('image').value||'').trim(),
           stepLabel: (q('label').value||'').trim(),
           stepText: (q('text').value||'').trim()

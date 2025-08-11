@@ -67,6 +67,15 @@ function replaceScreenshots(html, data, overrides = {}) {
     /(<img[^>]*class="[^"]*\bbrowser-screenshot\b[^"]*"(?![^>]*\bleft\b)(?![^>]*\bright\b)[^>]*src=")[^"]*(")/,
     (_, a, b) => `${a}${imgSrc}${b}`
   );
+  const isPlaceholder = /placeholder\.png(?:$|\?|#)/.test(String(imgSrc));
+  if (!/data-has-screenshot=/.test(out) && !isPlaceholder) {
+    out = out.replace('<body', '<body data-has-screenshot="true"');
+  }
+  // Ensure the main <img> becomes visible
+  out = out.replace(
+    /(<img[^>]*class="browser-screenshot"[^>]*)(>)/,
+    (m, a, b) => (/\bdata-visible=/.test(m) ? m : `${a} data-visible="true"${b}`)
+  );
 
   if (data.browserScreenshotLeft) {
     out = out.replace(
@@ -124,13 +133,6 @@ function replaceScreenshots(html, data, overrides = {}) {
     if (Object.prototype.hasOwnProperty.call(overrides, key)) {
       const textRe = new RegExp(`(<[^>]*data-key=\"${key}\"[^>]*>)([\s\S]*?)(<\/[^>]+>)`);
       out = out.replace(textRe, (_, a, _b, c) => `${a}${htmlEscape(overrides[key] || '')}${c}`);
-    }
-  }
-
-  if (!/data-has-screenshot=/.test(out)) {
-    const isPlaceholder = /placeholder\.png(?:$|\?|#)/.test(String(imgSrc));
-    if (!isPlaceholder && !data.browserScreenshotLeft && !data.browserScreenshotRight) {
-      out = out.replace('<body', '<body data-has-screenshot="true"');
     }
   }
 

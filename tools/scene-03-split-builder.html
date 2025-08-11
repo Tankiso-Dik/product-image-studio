@@ -12,6 +12,10 @@
       <h1 class="builder-title">Scene 03 — Split Layout</h1>
       <form class="builder-form" onsubmit="return false;">
         <div class="field">
+          <label for="theme">Theme</label>
+          <input type="text" id="theme" placeholder="green | yellow | purple" value="green">
+        </div>
+        <div class="field">
           <label for="url">URL (address bar)</label>
           <input type="text" id="url" placeholder="example.com" value="example.com">
         </div>
@@ -61,6 +65,7 @@
           bullet1: (q('bullet1').value||'').trim(),
           bullet2: (q('bullet2').value||'').trim(),
           bullet3: (q('bullet3').value||'').trim(),
+          theme: (q('theme').value||'').trim(),
           browserScreenshot: (q('image').value||'').trim()
         };
         const f=q('imageFile')?.files?.[0]; if(f){ try{ p.browserScreenshot=await toDataURL(f) }catch(e){} }
