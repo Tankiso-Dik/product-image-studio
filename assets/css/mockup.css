@@ -314,13 +314,8 @@
   to { opacity: 1; }
 }
 
-.scene-01 .content-wrapper {
-  gap: 32px;
-}
-
-.scene-01 .heading-wrap {
-  gap: 16px;
-}
+.scene-01 .content-wrapper { gap: 32px; }
+.scene-01 .heading-wrap { gap: 16px; }
 
 .scene-01 .main-heading {
   font-weight: 700;
@@ -347,11 +342,6 @@
     background: rgba(255,255,255,0.03);
   }
 
-  .scene-01 .main-heading {
-    color: #f8fafc;
-  }
-
-  .scene-01 .sub-heading {
-    color: #cbd5e1;
-  }
+  .scene-01 .main-heading { color: #f8fafc; }
+  .scene-01 .sub-heading { color: #cbd5e1; }
 }
