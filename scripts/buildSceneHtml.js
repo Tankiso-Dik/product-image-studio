@@ -180,6 +180,4 @@ function buildSceneHtml({ repoRoot, sceneHtmlPath, controllers, sceneJsonPath, o
   const merged = { ...data, ...overrides };
   return applyReplacements(html, merged, overrides);
 }
-
-module.exports = { buildSceneHtml };
-
+module.exports = { buildSceneHtml, htmlEscape };
