@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const { buildSceneHtml } = require('./scripts/buildSceneHtml');
+const { buildControllers } = require('./scripts/buildControllers');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -34,23 +35,7 @@ app.get('/api/scenes', (req, res) => {
 // Compose endpoint: returns filled HTML based on query params
 app.get('/api/compose', (req, res) => {
   const scene = req.query.scene || 'scenes/01-thumbnail.html';
-  const controllers = {
-    addressBar: req.query.url,
-    mainHeading: req.query.title,
-    subHeading: req.query.subtitle,
-    brandIcon: req.query.icon,
-    browserScreenshot: req.query.image,
-    theme: req.query.background,
-    themeColor: req.query.bgcolor,
-  };
-  for (let i = 1; i <= 4; i++) {
-    const bs = req.query[`browserScreenshot${i}`];
-    const sl = req.query[`stepLabel${i}`];
-    const st = req.query[`stepText${i}`];
-    if (bs) controllers[`browserScreenshot${i}`] = bs;
-    if (sl) controllers[`stepLabel${i}`] = sl;
-    if (st) controllers[`stepText${i}`] = st;
-  }
+  const controllers = buildControllers(req.query);
   const html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.send(html);
@@ -61,62 +46,14 @@ app.post('/api/compose', (req, res) => {
   // Support new scene base usage: body.scene like '01-thumbnail'
   const base = (body.scene || '').replace(/\.(html|json)$/i, '') || '01-thumbnail';
   const sceneJson = path.join(REPO_ROOT, 'scenes', `${base}.json`);
+  const controllers = buildControllers(body);
   if (fs.existsSync(sceneJson)) {
-    const overrides = {
-      addressBar: body.addressBar || body.url,
-      mainHeading: body.mainHeading || body.title,
-      subHeading: body.subHeading || body.subtitle,
-      brandIcon: body.brandIcon || body.icon,
-      browserScreenshot: body.browserScreenshot || body.image,
-      browserScreenshotLeft: body.browserScreenshotLeft || body.imageLeft,
-      browserScreenshotRight: body.browserScreenshotRight || body.imageRight,
-      theme: body.theme || body.background,
-      themeColor: body.themeColor || body.bgcolor,
-    };
-    for (let i = 1; i <= 4; i++) {
-      const bs = body[`browserScreenshot${i}`];
-      const sl = body[`stepLabel${i}`];
-      const st = body[`stepText${i}`];
-      if (bs) overrides[`browserScreenshot${i}`] = bs;
-      if (sl) overrides[`stepLabel${i}`] = sl;
-      if (st) overrides[`stepText${i}`] = st;
-    }
-    Object.keys(overrides).forEach((k) => overrides[k] == null && delete overrides[k]);
-    let html = buildSceneHtml({ sceneJsonPath: sceneJson, overrides });
-    for (let i = 1; i <= 4; i++) {
-      const label = body[`stepLabel${i}`];
-      if (label) {
-        const re = new RegExp(`(<[^>]*data-key=\"stepLabel${i}\"[^>]*>)([\\s\\S]*?)(<\/[^>]+>)`);
-        html = html.replace(re, (_, a, _b, c) => `${a}${label}${c}`);
-      }
-      const text = body[`stepText${i}`];
-      if (text) {
-        const re = new RegExp(`(<[^>]*data-key=\"stepText${i}\"[^>]*>)([\\s\\S]*?)(<\/[^>]+>)`);
-        html = html.replace(re, (_, a, _b, c) => `${a}${text}${c}`);
-      }
-    }
+    const html = buildSceneHtml({ sceneJsonPath: sceneJson, overrides: controllers });
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     return res.send(html);
   }
   // Fallback legacy path usage
   const scene = body.scene || 'scenes/01-thumbnail.html';
-  const controllers = {
-    addressBar: body.url,
-    mainHeading: body.title,
-    subHeading: body.subtitle,
-    brandIcon: body.icon,
-    browserScreenshot: body.image,
-    theme: body.background,
-    themeColor: body.bgcolor,
-  };
-  for (let i = 1; i <= 4; i++) {
-    const bs = body[`browserScreenshot${i}`];
-    const sl = body[`stepLabel${i}`];
-    const st = body[`stepText${i}`];
-    if (bs) controllers[`browserScreenshot${i}`] = bs;
-    if (sl) controllers[`stepLabel${i}`] = sl;
-    if (st) controllers[`stepText${i}`] = st;
-  }
   const html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.send(html);
