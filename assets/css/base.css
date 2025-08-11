@@ -51,3 +51,14 @@ body::after {
     outline: 2px solid rgba(16,185,129,0.6);
     outline-offset: 2px;
 }
+
+/* Scene 01 background */
+body.scene-01 {
+    background: radial-gradient(circle at 50% 50%, #ffffff 0%, #e8eef5 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+    body.scene-01 {
+        background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+    }
+}

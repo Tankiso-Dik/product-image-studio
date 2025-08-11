@@ -279,3 +279,79 @@
   text-align: center;
   max-width: 720px;
 }
+
+/* Scene 01 specific polish */
+.scene-01 .browser-mockup {
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.75);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.18), 0 20px 40px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.scene-01 .browser-mockup::before {
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0) 40%);
+}
+
+.scene-01 .screenshot-wrap {
+  border-radius: var(--radius-frame);
+  padding: 0 20px 24px;
+  aspect-ratio: 16/9;
+  background: rgba(0,0,0,0.02);
+}
+
+.scene-01 .browser-screenshot {
+  border-radius: calc(var(--radius-frame) - 12px);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.15), 0 12px 24px rgba(0,0,0,0.1);
+}
+
+.scene-01 .browser-screenshot.fade-in {
+  opacity: 0;
+  animation: scene01-fade-in 0.6s ease forwards;
+}
+
+@keyframes scene01-fade-in {
+  to { opacity: 1; }
+}
+
+.scene-01 .content-wrapper {
+  gap: 32px;
+}
+
+.scene-01 .heading-wrap {
+  gap: 16px;
+}
+
+.scene-01 .main-heading {
+  font-weight: 700;
+  color: var(--text-strong);
+  background: none;
+}
+
+.scene-01 .sub-heading {
+  font-weight: 300;
+  color: var(--text-muted);
+}
+
+@media (prefers-color-scheme: dark) {
+  .scene-01 .browser-mockup {
+    background: rgba(30,41,59,0.5);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .scene-01 .browser-mockup::before {
+    background: linear-gradient(180deg, rgba(255,255,255,0.2), rgba(255,255,255,0) 40%);
+  }
+
+  .scene-01 .screenshot-wrap {
+    background: rgba(255,255,255,0.03);
+  }
+
+  .scene-01 .main-heading {
+    color: #f8fafc;
+  }
+
+  .scene-01 .sub-heading {
+    color: #cbd5e1;
+  }
+}
