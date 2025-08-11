@@ -17,26 +17,3 @@
 .theme-dot.yellow { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
 .theme-dot.purple { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
 
-/* Floating decorative elements */
-.floating-orb {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-    opacity: 0.6;
-}
-
-.orb-1 {
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
-    top: 15%;
-    right: 10%;
-}
-
-.orb-2 {
-    width: 80px;
-    height: 80px;
-    background: radial-gradient(circle, rgba(251, 191, 36, 0.12) 0%, transparent 70%);
-    bottom: 20%;
-    left: 8%;
-}
