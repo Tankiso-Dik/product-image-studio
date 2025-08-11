@@ -64,7 +64,7 @@ function replaceScreenshots(html, data, overrides = {}) {
 
   const imgSrc = data.browserScreenshot || '../assets/screenshots/placeholder.png';
   out = out.replace(
-    /(<img[^>]*class="browser-screenshot"(?![^>]*\bleft\b)(?![^>]*\bright\b)[^>]*src=")[^"]*(")/,
+    /(<img[^>]*class="[^"]*\bbrowser-screenshot\b[^"]*"(?![^>]*\bleft\b)(?![^>]*\bright\b)[^>]*src=")[^"]*(")/,
     (_, a, b) => `${a}${imgSrc}${b}`
   );
 

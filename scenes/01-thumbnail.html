@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scene 01 - Thumbnail</title>
@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../assets/css/theme.css">
     <link rel="stylesheet" href="../assets/css/mockup.css">
 </head>
-<body class="scene-01">
+<body data-theme="green" data-has-screenshot="true" class="scene-01">
     <div class="scene-container" data-key="themeColor">
 
         <!-- Theme selector -->
@@ -35,9 +35,9 @@
                 <!-- Screenshot area inside the browser frame (no mock UI) -->
                 <div class="screenshot-wrap">
                     <img
-                        class="browser-screenshot fade-in"
+                        class="browser-screenshot fade-in" data-visible="true"
                         data-key="browserScreenshot"
-                        src="../assets/screenshots/placeholder.png"
+                        src="../assets/screenshots/Screenshot from 2025-08-06 14-56-38.png"
                         alt="Screenshot placeholder"
                     />
                 </div>
@@ -46,9 +46,9 @@
             <!-- Headings -->
             <div class="heading-wrap">
                 <img class="brand-icon notion-icon" data-key="brandIcon" src="http://upload.wikimedia.org/wikipedia/commons/e/e9/Notion-logo.svg" alt="Brand icon">
-                <h1 class="main-heading" data-key="mainHeading">Your Product Name</h1>
+                <h1 class="main-heading" data-key="mainHeading">Plan without burnout</h1>
             </div>
-            <p class="sub-heading" data-key="subHeading">Concise, compelling subheading goes here</p>
+            <p class="sub-heading" data-key="subHeading">This dashboard helps you pace the journey</p>
 
             <!-- Sections container injected by builder -->
             <div class="dashboard-sections" data-key="sections"></div>
