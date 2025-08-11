@@ -42,7 +42,23 @@ app.get('/api/scenes', (_req, res) => {
 app.get('/api/compose', (req, res) => {
   const scene = req.query.scene || 'scenes/01-thumbnail.html';
   const controllers = buildControllers(req.query);
-  const html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
+  let html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
+
+  // Optional background overrides via query
+  const bgStart = req.query.bgStart;
+  const bgEnd = req.query.bgEnd;
+  const noiseOpacity = req.query.noiseOpacity;
+  if (bgStart || bgEnd || noiseOpacity) {
+    const styleParts = [];
+    if (bgStart) styleParts.push(`--bg-start:${htmlEscape(bgStart)}`);
+    if (bgEnd) styleParts.push(`--bg-end:${htmlEscape(bgEnd)}`);
+    if (noiseOpacity) styleParts.push(`--noise-opacity:${htmlEscape(noiseOpacity)}`);
+    if (styleParts.length) {
+      const inline = styleParts.join(';');
+      html = html.replace('<body', `<body style="${inline}"`);
+    }
+  }
+
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.send(html);
 });
@@ -85,14 +101,37 @@ app.post('/api/compose', (req, res) => {
     // Combine controller-derived values with our alias map (alias wins)
     const overrides = { ...controllers, ...alias };
 
-    const html = buildSceneHtml({ sceneJsonPath: sceneJson, overrides });
+    let html = buildSceneHtml({ sceneJsonPath: sceneJson, overrides });
+    // Optional background overrides via POST
+    const { bgStart, bgEnd, noiseOpacity } = body;
+    if (bgStart || bgEnd || noiseOpacity) {
+      const styleParts = [];
+      if (bgStart) styleParts.push(`--bg-start:${htmlEscape(bgStart)}`);
+      if (bgEnd) styleParts.push(`--bg-end:${htmlEscape(bgEnd)}`);
+      if (noiseOpacity) styleParts.push(`--noise-opacity:${htmlEscape(noiseOpacity)}`);
+      if (styleParts.length) {
+        const inline = styleParts.join(';');
+        html = html.replace('<body', `<body style="${inline}"`);
+      }
+    }
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     return res.send(html);
   }
 
   // Fallback legacy path usage
   const scene = body.scene || 'scenes/01-thumbnail.html';
-  const html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
+  let html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
+  const { bgStart, bgEnd, noiseOpacity } = body;
+  if (bgStart || bgEnd || noiseOpacity) {
+    const styleParts = [];
+    if (bgStart) styleParts.push(`--bg-start:${htmlEscape(bgStart)}`);
+    if (bgEnd) styleParts.push(`--bg-end:${htmlEscape(bgEnd)}`);
+    if (noiseOpacity) styleParts.push(`--noise-opacity:${htmlEscape(noiseOpacity)}`);
+    if (styleParts.length) {
+      const inline = styleParts.join(';');
+      html = html.replace('<body', `<body style="${inline}"`);
+    }
+  }
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.send(html);
 });
