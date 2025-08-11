@@ -252,4 +252,4 @@ function buildSceneHtml({ repoRoot, sceneHtmlPath, controllers, sceneJsonPath, o
   return html;
 }
 
-module.exports = { buildSceneHtml };
+module.exports = { buildSceneHtml, htmlEscape };

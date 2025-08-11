@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
-const { buildSceneHtml } = require('./scripts/buildSceneHtml');
+const { buildSceneHtml, htmlEscape } = require('./scripts/buildSceneHtml');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -87,12 +87,12 @@ app.post('/api/compose', (req, res) => {
       const label = body[`stepLabel${i}`];
       if (label) {
         const re = new RegExp(`(<[^>]*data-key=\"stepLabel${i}\"[^>]*>)([\\s\\S]*?)(<\/[^>]+>)`);
-        html = html.replace(re, (_, a, _b, c) => `${a}${label}${c}`);
+        html = html.replace(re, (_, a, _b, c) => `${a}${htmlEscape(label)}${c}`);
       }
       const text = body[`stepText${i}`];
       if (text) {
         const re = new RegExp(`(<[^>]*data-key=\"stepText${i}\"[^>]*>)([\\s\\S]*?)(<\/[^>]+>)`);
-        html = html.replace(re, (_, a, _b, c) => `${a}${text}${c}`);
+        html = html.replace(re, (_, a, _b, c) => `${a}${htmlEscape(text)}${c}`);
       }
     }
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
