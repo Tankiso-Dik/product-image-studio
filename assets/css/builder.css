@@ -7,6 +7,7 @@
 }
 .builder-title { font-size: 28px; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.01em; }
 .builder-note { color: #475569; margin-bottom: 20px; }
+.builder-links { list-style: none; padding: 0; display: grid; gap: 8px; }
 
 .builder-form { display: grid; gap: 16px; }
 .field { display: grid; gap: 6px; }

@@ -125,7 +125,9 @@ app.post('/api/compose', (req, res) => {
 
 // Default route: index with links to per-scene builders
 app.get('/', (req, res) => {
-  res.type('html').send(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Product Image Studio</title><link rel="stylesheet" href="/assets/css/builder.css"></head><body class="builder-page"><main class="builder-container"><h1 class="builder-title">Product Image Studio</h1><ul class="builder-note" style="list-style:none; padding:0; display:grid; gap:8px;"><li><a href="/tools/scene-01-builder.html">Scene 01 Builder (Single Screenshot)</a></li><li><a href="/tools/scene-02-builder.html">Scene 02 Builder (Feature Spotlight – Two Screenshots)</a></li><li><a href="/tools/scene-02-feature-variation-1-builder.html">Scene 02 Variation 1 Builder (How To Use – One Step)</a></li></ul></main></body></html>`);
+  res
+    .type('html')
+    .send(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Product Image Studio</title><link rel="stylesheet" href="/assets/css/builder.css"></head><body class="builder-page"><main class="builder-container"><h1 class="builder-title">Product Image Studio</h1><ul class="builder-note builder-links"><li><a href="/tools/scene-01-builder.html">Scene 01 Builder (Single Screenshot)</a></li><li><a href="/tools/scene-02-builder.html">Scene 02 Builder (Feature Spotlight – Two Screenshots)</a></li><li><a href="/tools/scene-02-feature-variation-1-builder.html">Scene 02 Variation 1 Builder (How To Use – One Step)</a></li></ul></main></body></html>`);
 });
 
 app.listen(PORT, () => {
