@@ -9,7 +9,7 @@
   </head>
   <body class="builder-page">
     <main class="builder-container">
-      <h1 class="builder-title">Scene 02 — Two Screenshots</h1>
+      <h1 class="builder-title">Scene 02 — Feature Spotlight</h1>
       <form class="builder-form" onsubmit="return false;">
         <div class="field">
           <label for="url">URL (address bar)</label>
@@ -24,36 +24,20 @@
           <input type="text" id="subtitle" placeholder="Concise, compelling subheading" value="A simple system that rewards steady wins">
         </div>
         <div class="field">
-          <label for="image1">Step 1 Screenshot (URL)</label>
-          <input type="text" id="image1" placeholder="assets/screenshots/step1.png">
+          <label for="image">Step Screenshot (URL)</label>
+          <input type="text" id="image" placeholder="assets/screenshots/step.png">
         </div>
         <div class="field">
-          <label for="imageFile1">Or pick a step 1 file</label>
-          <input type="file" id="imageFile1" accept="image/*">
+          <label for="imageFile">Or pick a step file</label>
+          <input type="file" id="imageFile" accept="image/*">
         </div>
         <div class="field">
-          <label for="label1">Step 1 Label</label>
-          <input type="text" id="label1" placeholder="Step" value="Step">
+          <label for="label">Step Label</label>
+          <input type="text" id="label" placeholder="Step" value="Step">
         </div>
         <div class="field">
-          <label for="text1">Step 1 Instruction</label>
-          <input type="text" id="text1" placeholder="Short instruction goes here">
-        </div>
-        <div class="field">
-          <label for="image2">Step 2 Screenshot (URL)</label>
-          <input type="text" id="image2" placeholder="assets/screenshots/step2.png">
-        </div>
-        <div class="field">
-          <label for="imageFile2">Or pick a step 2 file</label>
-          <input type="file" id="imageFile2" accept="image/*">
-        </div>
-        <div class="field">
-          <label for="label2">Step 2 Label</label>
-          <input type="text" id="label2" placeholder="Step" value="Step">
-        </div>
-        <div class="field">
-          <label for="text2">Step 2 Instruction</label>
-          <input type="text" id="text2" placeholder="Short instruction goes here">
+          <label for="text">Step Instruction</label>
+          <input type="text" id="text" placeholder="Short instruction goes here">
         </div>
         <div class="actions">
           <button id="applyBtn" type="button">Apply</button>
@@ -70,15 +54,11 @@
           addressBar: (q('url').value||'').trim(),
           mainHeading: (q('title').value||'').trim(),
           subHeading: (q('subtitle').value||'').trim(),
-          browserScreenshot1: (q('image1').value||'').trim(),
-          browserScreenshot2: (q('image2').value||'').trim(),
-          stepLabel1: (q('label1').value||'').trim(),
-          stepText1: (q('text1').value||'').trim(),
-          stepLabel2: (q('label2').value||'').trim(),
-          stepText2: (q('text2').value||'').trim()
+          browserScreenshot: (q('image').value||'').trim(),
+          stepLabel: (q('label').value||'').trim(),
+          stepText: (q('text').value||'').trim()
         };
-        const f1=q('imageFile1')?.files?.[0]; if(f1){ try{ p.browserScreenshot1=await toDataURL(f1) }catch(e){} }
-        const f2=q('imageFile2')?.files?.[0]; if(f2){ try{ p.browserScreenshot2=await toDataURL(f2) }catch(e){} }
+        const f=q('imageFile')?.files?.[0]; if(f){ try{ p.browserScreenshot=await toDataURL(f) }catch(e){} }
         return p;
       }
       q('applyBtn').addEventListener('click', async ()=>{
