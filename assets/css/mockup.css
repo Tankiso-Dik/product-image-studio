@@ -150,29 +150,12 @@
   padding: 20px 18px 24px;
 }
 
-/* Two-up screenshot grid for scene 02 */
-.screenshot-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 6px;
-}
-.screenshot-grid .browser-screenshot {
-  display: none;
-  border-radius: var(--radius-card);
-}
-[data-has-screenshot-left="true"] .screenshot-grid .browser-screenshot.left { display: block; }
-[data-has-screenshot-right="true"] .screenshot-grid .browser-screenshot.right { display: block; }
-
 /* Four-step how-to grid */
 .howto-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 10px;
   margin-top: 8px;
-}
-[data-has-screenshot-1="true"]:not([data-has-screenshot-2]):not([data-has-screenshot-3]):not([data-has-screenshot-4]) .howto-grid {
-  grid-template-columns: 1fr;
 }
 .howto-item {
   background: rgba(255,255,255,0.7);
@@ -180,13 +163,6 @@
   border-radius: var(--radius-card);
   padding: 8px;
   width: auto;
-}
-.howto-item .browser-screenshot {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: var(--radius-card); /* rounded on all corners */
-  box-shadow: var(--shadow-soft);
 }
 .step-label {
   margin-top: 6px;
@@ -310,6 +286,46 @@
 .scene-01 .browser-screenshot.fade-in {
   opacity: 0;
   animation: scene01-fade-in 0.6s ease forwards;
+}
+
+/* Scene 02 specific polish */
+.scene-02 .browser-screenshot {
+  border-radius: var(--radius-card);
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.15), 0 12px 24px rgba(0,0,0,0.1);
+}
+
+/* Scene 03 split layout */
+.scene-03 .content-wrapper.split {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.scene-03 .text-column {
+  flex: 1;
+}
+
+.scene-03 .browser-mockup {
+  flex: 1;
+}
+
+.scene-03 .bullet-list {
+  margin-top: 16px;
+  padding-left: 20px;
+}
+
+.scene-03 .bullet-list li {
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .scene-03 .content-wrapper.split {
+    flex-direction: column;
+  }
 }
 
 @keyframes scene01-fade-in {

@@ -110,6 +110,15 @@ function replaceScreenshots(html, data, overrides = {}) {
     }
   }
 
+  if (Object.prototype.hasOwnProperty.call(data, 'stepLabel')) {
+    const labelRe = /(<[^>]*data-key="stepLabel"[^>]*>)([\s\S]*?)(<\/[^>]+>)/;
+    out = out.replace(labelRe, (_, a, _b, c) => `${a}${htmlEscape(data.stepLabel)}${c}`);
+  }
+  if (Object.prototype.hasOwnProperty.call(data, 'stepText')) {
+    const textRe = /(<[^>]*data-key="stepText"[^>]*>)([\s\S]*?)(<\/[^>]+>)/;
+    out = out.replace(textRe, (_, a, _b, c) => `${a}${htmlEscape(data.stepText || '')}${c}`);
+  }
+
   for (let i = 1; i <= 4; i++) {
     const key = `stepText${i}`;
     if (Object.prototype.hasOwnProperty.call(overrides, key)) {
@@ -131,6 +140,18 @@ function replaceScreenshots(html, data, overrides = {}) {
 function replaceTheme(html, data) {
   if (!Object.prototype.hasOwnProperty.call(data, 'theme')) return html;
   return html.replace('<body', `<body data-theme="${htmlEscape(data.theme)}"`);
+}
+
+function replaceBullets(html, data) {
+  let out = html;
+  for (let i = 1; i <= 5; i++) {
+    const key = `bullet${i}`;
+    if (Object.prototype.hasOwnProperty.call(data, key)) {
+      const re = new RegExp(`(<li[^>]*data-key=\"${key}\"[^>]*>)([\\s\\S]*?)(<\\/li>)`);
+      out = out.replace(re, (_, a, _b, c) => `${a}${htmlEscape(data[key] || '')}${c}`);
+    }
+  }
+  return out;
 }
 
 function replaceSections(html, data) {
@@ -155,6 +176,7 @@ function applyReplacements(html, data, overrides) {
   out = replaceScreenshots(out, data, overrides);
   out = replaceTheme(out, data);
   out = replaceSections(out, data);
+  out = replaceBullets(out, data);
   out = ensureBaseHref(out);
   return out;
 }

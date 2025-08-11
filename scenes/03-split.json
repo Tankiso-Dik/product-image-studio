@@ -1,0 +1,10 @@
+{
+  "theme": "green",
+  "addressBar": "example.com",
+  "browserScreenshot": "../assets/screenshots/placeholder.png",
+  "mainHeading": "Main heading",
+  "subHeading": "Subheading",
+  "bullet1": "First point",
+  "bullet2": "Second point",
+  "bullet3": "Third point"
+}

@@ -154,8 +154,8 @@ app.get('/', (_req, res) => {
     <h1 class="builder-title">Product Image Studio</h1>
     <ul class="builder-note builder-links">
       <li><a href="/tools/scene-01-builder.html">Scene 01 Builder (Single Screenshot)</a></li>
-      <li><a href="/tools/scene-02-builder.html">Scene 02 Builder (Feature Spotlight – Two Screenshots)</a></li>
-      <li><a href="/tools/scene-02-feature-variation-1-builder.html">Scene 02 Variation 1 Builder (How To Use – One Step)</a></li>
+      <li><a href="/tools/scene-02-builder.html">Scene 02 Builder (Feature Spotlight)</a></li>
+      <li><a href="/tools/scene-03-split-builder.html">Scene 03 Builder (Split Layout)</a></li>
     </ul>
   </main>
 </body>
