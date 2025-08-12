@@ -10,14 +10,11 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    /* Defaults preserved via fallbacks */
-    --bg-start: #ffffff;
-    --bg-end: #e8eef5;
+    /* Global dark scene background (overridable via CSS vars) */
+    --bg-start: #1e293b;
+    --bg-end: #0f172a;
     --noise-opacity: 0.03;
-    background:
-        radial-gradient(circle at 20% 80%, rgba(120, 220, 180, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 240, 120, 0.25) 0%, transparent 50%),
-        linear-gradient(135deg, #f8fffe 0%, #f0f9f4 25%, #fef9f0 75%, #f8fffe 100%);
+    background: radial-gradient(circle at 50% 50%, var(--bg-start) 0%, var(--bg-end) 100%);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -59,11 +56,8 @@ body::after {
 
 /* Scene 01 background */
 body.scene-01 {
-    background: radial-gradient(circle at 50% 50%, var(--bg-start, #ffffff) 0%, var(--bg-end, #e8eef5) 100%);
-}
-
-@media (prefers-color-scheme: dark) {
-    body.scene-01 {
-        background: radial-gradient(circle at 50% 50%, var(--bg-start, #1e293b) 0%, var(--bg-end, #0f172a) 100%);
-    }
+    /* Set scene-specific defaults; still overridable via inline CSS vars */
+    --bg-start: #1e293b;
+    --bg-end: #0f172a;
+    background: radial-gradient(circle at 50% 50%, var(--bg-start) 0%, var(--bg-end) 100%);
 }

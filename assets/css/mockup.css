@@ -56,10 +56,13 @@
 .browser-mockup {
   width: 100%;
   max-width: 960px;
-  background: rgba(15,23,42,0.85);
-  border: 1px solid rgba(255, 255, 255, 0.75);
+  /* Glassy translucent frame, color-agnostic */
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--outline-color, rgba(255, 255, 255, 0.75));
   border-radius: var(--radius-frame);
   box-shadow: var(--shadow-frame), inset 0 0 0 1px rgba(255,255,255,0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   overflow: hidden;
   position: relative;
 }
@@ -139,10 +142,14 @@
 /* Subtle glass overlay on top edge of the screenshot */
 .screenshot-wrap {
   position: relative;
+  border-top-left-radius: var(--radius-frame);
+  border-top-right-radius: var(--radius-frame);
   border-bottom-left-radius: var(--radius-frame);
   border-bottom-right-radius: var(--radius-frame);
   overflow: hidden;
   margin-top: 12px;
+  /* Add bottom breathing room inside the frame */
+  padding-bottom: 16px;
   width: 92%;
   margin-left: auto;
   margin-right: auto;
@@ -196,6 +203,8 @@
 
 .page-icon { font-size: 22px; }
 .page-title { font-weight: 600; color: #0f172a; }
+/* Scene 02 page title on dark background */
+.scene-02 .page-title { color: #f8fafc; }
 
 .dashboard-grid {
   display: grid;
@@ -255,19 +264,16 @@
   font-size: 40px;
   line-height: 1.1;
   letter-spacing: -0.02em;
-  color: transparent;
+  color: #f8fafc; /* readable on dark */
   text-align: center;
   word-break: break-word;
   hyphens: auto;
-  background: linear-gradient(90deg, #0f172a, #334155);
-  -webkit-background-clip: text;
-  background-clip: text;
 }
 
 .sub-heading {
   font-size: 16px;
-  color: #475569;
-  opacity: 0.9;
+  color: #cbd5e1;
+  opacity: 0.95;
   text-align: center;
   max-width: 720px;
 }
@@ -287,7 +293,8 @@
 }
 
 .scene-01 .browser-screenshot {
-  border-radius: 0 0 var(--radius-frame) var(--radius-frame);
+  /* Slightly reduced rounding vs. frame */
+  border-radius: clamp(8px, calc(var(--radius-frame) - 8px), var(--radius-frame));
   display: block;
   width: 100%;
   height: auto;
@@ -306,6 +313,8 @@
   margin:12px auto 0;
   position:relative;
   overflow:hidden;
+  border-top-left-radius:var(--radius-frame,24px);
+  border-top-right-radius:var(--radius-frame,24px);
   border-bottom-left-radius:var(--radius-frame,24px);
   border-bottom-right-radius:var(--radius-frame,24px);
 }
@@ -318,7 +327,7 @@
 }
 .scene-02 .browser-screenshot{
   display:block; width:100%; height:auto; object-fit:cover;
-  border-radius:0 0 var(--radius-frame,24px) var(--radius-frame,24px);
+  border-radius:clamp(8px, calc(var(--radius-frame,24px) - 8px), var(--radius-frame,24px));
   box-shadow:var(--shadow-soft,0 24px 48px rgba(0,0,0,.35));
   opacity:0; transition:opacity .35s ease;
 }
@@ -356,13 +365,14 @@
 
 .scene-01 .main-heading {
   font-weight: 700;
-  color: var(--text-strong);
+  /* Ensure high contrast on dark background */
+  color: #f8fafc;
   background: none;
 }
 
 .scene-01 .sub-heading {
   font-weight: 300;
-  color: var(--text-muted);
+  color: #cbd5e1;
 }
 
 @keyframes scene01-fade-in {
@@ -377,7 +387,4 @@
   .scene-01 .browser-mockup::before {
     background: linear-gradient(180deg, rgba(255,255,255,0.2), rgba(255,255,255,0) 40%);
   }
-
-  .scene-01 .main-heading { color: #f8fafc; }
-  .scene-01 .sub-heading { color: #cbd5e1; }
 }

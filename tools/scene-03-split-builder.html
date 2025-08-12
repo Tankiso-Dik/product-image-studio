@@ -47,6 +47,16 @@
           <label for="imageFile">Or pick a screenshot file</label>
           <input type="file" id="imageFile" accept="image/*">
         </div>
+        <div class="field two-col">
+          <div>
+            <label for="bgStart">Background Start (CSS color)</label>
+            <input type="text" id="bgStart" placeholder="#1e293b">
+          </div>
+          <div>
+            <label for="bgEnd">Background End (CSS color)</label>
+            <input type="text" id="bgEnd" placeholder="#0f172a">
+          </div>
+        </div>
         <div class="actions">
           <button id="applyBtn" type="button">Apply</button>
           <a id="openScene" href="/scenes/03-split.html" target="_blank">Open Scene</a>
@@ -66,7 +76,9 @@
           bullet2: (q('bullet2').value||'').trim(),
           bullet3: (q('bullet3').value||'').trim(),
           theme: (q('theme').value||'').trim(),
-          browserScreenshot: (q('image').value||'').trim()
+          browserScreenshot: (q('image').value||'').trim(),
+          bgStart: (q('bgStart').value||'').trim(),
+          bgEnd: (q('bgEnd').value||'').trim()
         };
         const f=q('imageFile')?.files?.[0]; if(f){ try{ p.browserScreenshot=await toDataURL(f) }catch(e){} }
         return p;

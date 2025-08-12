@@ -20,6 +20,10 @@
           <input type="text" id="url" placeholder="example.com" value="example.com">
         </div>
         <div class="field">
+          <label for="featureTitle">Feature Title (in-frame)</label>
+          <input type="text" id="featureTitle" placeholder="Feature Spotlight" value="Feature Spotlight">
+        </div>
+        <div class="field">
           <label for="title">Main Heading</label>
           <input type="text" id="title" placeholder="Your Product Name" value="Make progress visible">
         </div>
@@ -35,13 +39,20 @@
           <label for="imageFile">Or pick a step file</label>
           <input type="file" id="imageFile" accept="image/*">
         </div>
-        <div class="field">
-          <label for="label">Step Label</label>
-          <input type="text" id="label" placeholder="Step" value="Step">
+        <div class="field two-col">
+          <div>
+            <label for="bgStart">Background Start (CSS color)</label>
+            <input type="text" id="bgStart" placeholder="#1e293b">
+          </div>
+          <div>
+            <label for="bgEnd">Background End (CSS color)</label>
+            <input type="text" id="bgEnd" placeholder="#0f172a">
+          </div>
         </div>
         <div class="field">
-          <label for="text">Step Instruction</label>
-          <input type="text" id="text" placeholder="Short instruction goes here">
+          <label for="outline">Frame Outline Color (CSS color)</label>
+          <input type="text" id="outline" placeholder="#ffffff or rgba(255,255,255,0.75)" value="rgba(255,255,255,0.75)">
+          <div class="hint">Controls the browser frame border color via CSS variable.</div>
         </div>
         <div class="actions">
           <button id="applyBtn" type="button">Apply</button>
@@ -56,12 +67,14 @@
         const p={
           scene: '02-feature',
           addressBar: (q('url').value||'').trim(),
+          pageTitle: (q('featureTitle').value||'').trim(),
           mainHeading: (q('title').value||'').trim(),
           subHeading: (q('subtitle').value||'').trim(),
           theme: (q('theme').value||'').trim(),
           browserScreenshot: (q('image').value||'').trim(),
-          stepLabel: (q('label').value||'').trim(),
-          stepText: (q('text').value||'').trim()
+          outlineColor: (q('outline').value||'').trim(),
+          bgStart: (q('bgStart').value||'').trim(),
+          bgEnd: (q('bgEnd').value||'').trim()
         };
         const f=q('imageFile')?.files?.[0]; if(f){ try{ p.browserScreenshot=await toDataURL(f) }catch(e){} }
         return p;

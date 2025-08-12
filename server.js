@@ -70,12 +70,13 @@ function composeHtmlFromBody(body = {}) {
   let html = buildSceneHtml({ sceneJsonPath: sceneJson, overrides });
 
   // Optional inline theme vars
-  const { bgStart, bgEnd, noiseOpacity } = body;
-  if (bgStart || bgEnd || noiseOpacity) {
+  const { bgStart, bgEnd, noiseOpacity, outlineColor } = body;
+  if (bgStart || bgEnd || noiseOpacity || outlineColor) {
     const styleParts = [];
     if (bgStart) styleParts.push(`--bg-start:${htmlEscape(bgStart)}`);
     if (bgEnd) styleParts.push(`--bg-end:${htmlEscape(bgEnd)}`);
     if (noiseOpacity) styleParts.push(`--noise-opacity:${htmlEscape(noiseOpacity)}`);
+    if (outlineColor) styleParts.push(`--outline-color:${htmlEscape(outlineColor)}`);
     if (styleParts.length) {
       const inline = styleParts.join(';');
       html = html.replace('<body', `<body style="${inline}"`);
@@ -136,12 +137,13 @@ app.get('/api/compose', (req, res) => {
     const controllers = buildControllers(req.query);
     let html = buildSceneHtml({ sceneHtmlPath: scenePath, controllers });
 
-    const { bgStart, bgEnd, noiseOpacity } = req.query;
-    if (bgStart || bgEnd || noiseOpacity) {
+    const { bgStart, bgEnd, noiseOpacity, outlineColor } = req.query;
+    if (bgStart || bgEnd || noiseOpacity || outlineColor) {
       const styleParts = [];
       if (bgStart) styleParts.push(`--bg-start:${htmlEscape(bgStart)}`);
       if (bgEnd) styleParts.push(`--bg-end:${htmlEscape(bgEnd)}`);
       if (noiseOpacity) styleParts.push(`--noise-opacity:${htmlEscape(noiseOpacity)}`);
+      if (outlineColor) styleParts.push(`--outline-color:${htmlEscape(outlineColor)}`);
       if (styleParts.length) {
         const inline = styleParts.join(';');
         html = html.replace('<body', `<body style="${inline}"`);

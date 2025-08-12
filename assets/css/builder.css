@@ -5,14 +5,14 @@
   padding: 0 18px;
   font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
 }
-.builder-title { font-size: 28px; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.01em; }
-.builder-note { color: #475569; margin-bottom: 20px; }
+.builder-title { font-size: 28px; color: #f8fafc; margin-bottom: 6px; letter-spacing: -0.01em; }
+.builder-note { color: #cbd5e1; margin-bottom: 20px; }
 .builder-links { list-style: none; padding: 0; display: grid; gap: 8px; }
 
 .builder-form { display: grid; gap: 16px; }
 .field { display: grid; gap: 6px; }
 .field.two-col { grid-template-columns: 1fr 1fr; gap: 10px; }
-.field label { font-weight: 600; color: #111827; }
+.field label { font-weight: 600; color: #e2e8f0; }
 .field input, .field select {
   padding: 10px 12px;
   border: 1px solid #e5e7eb;
@@ -37,4 +37,4 @@ html, body.builder-page { height: auto; }
   justify-content: initial;  /* cancel base.css centering */
   padding: 24px 0;           /* slimmer vertical padding */
 }
-.builder-page::after { display: none; } /* disable noise overlay */
+/* Keep subtle noise overlay consistent with scenes */

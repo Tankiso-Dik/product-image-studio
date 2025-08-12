@@ -1,6 +1,7 @@
 function buildControllers(src = {}) {
   const controllers = {
     addressBar: src.addressBar ?? src.url,
+    pageTitle: src.pageTitle, // in-frame title for scene 02
     mainHeading: src.mainHeading ?? src.title,
     subHeading: src.subHeading ?? src.subtitle,
     brandIcon: src.brandIcon ?? src.icon,
@@ -9,6 +10,7 @@ function buildControllers(src = {}) {
     browserScreenshotRight: src.browserScreenshotRight ?? src.imageRight,
     theme: src.theme ?? src.background,
     themeColor: src.themeColor ?? src.bgcolor,
+    outlineColor: src.outlineColor ?? src.outline, // customizable outlines
   };
   for (let i = 1; i <= 4; i++) {
     const bsKey = `browserScreenshot${i}`;

@@ -72,9 +72,9 @@ function replaceScreenshots(html, data, overrides = {}) {
   if (!/data-has-screenshot=/.test(out) && !isPlaceholder) {
     out = out.replace('<body', '<body data-has-screenshot="true"');
   }
-  // Ensure the main <img> becomes visible
+  // Ensure the main <img> becomes visible (any class list containing browser-screenshot)
   out = out.replace(
-    /(<img[^>]*class="browser-screenshot"[^>]*)(>)/,
+    /(<img[^>]*class="[^"]*\bbrowser-screenshot\b[^"]*"[^>]*)(>)/,
     (m, a, b) => (/\bdata-visible=/.test(m) ? m : `${a} data-visible="true"${b}`)
   );
 
@@ -166,6 +166,12 @@ function replaceSections(html, data) {
   );
 }
 
+function replaceByDataKey(html, data, key) {
+  if (!Object.prototype.hasOwnProperty.call(data, key)) return html;
+  const re = new RegExp(`(<[^>]*data-key=\\"${key}\\"[^>]*>)([\\s\\S]*?)(<\\/[^>]+>)`);
+  return html.replace(re, (_, a, _b, c) => `${a}${htmlEscape(data[key] || '')}${c}`);
+}
+
 function ensureBaseHref(html) {
   if (/<base\s+href=/i.test(html)) return html;
   return html.replace(/<head(\s[^>]*)?>/i, (m) => `${m}<base href="/">`);
@@ -179,6 +185,8 @@ function applyReplacements(html, data, overrides) {
   out = replaceScreenshots(out, data, overrides);
   out = replaceTheme(out, data);
   out = replaceSections(out, data);
+  // Scene-specific simple swaps
+  out = replaceByDataKey(out, data, 'pageTitle');
   out = replaceBullets(out, data);
   out = ensureBaseHref(out);
   return out;
