@@ -22,3 +22,7 @@ This project builds temporary HTML files and PNG screenshots from scene JSON fil
 
 The commands above write `.temp.html` files and corresponding `.png` images into `output/`, which is ignored in version control.
 
+## License
+
+Licensed under the [MIT License](LICENSE).
+
