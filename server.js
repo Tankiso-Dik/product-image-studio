@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
+const puppeteer = require('puppeteer');
 
 // Keep both exports available from buildSceneHtml; htmlEscape may be used by callers later.
 // eslint-disable-next-line no-unused-vars
@@ -134,6 +135,84 @@ app.post('/api/compose', (req, res) => {
   }
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.send(html);
+});
+
+// Render a PNG screenshot from a scene definition
+app.post('/api/screenshot', async (req, res) => {
+  const body = req.body || {};
+  const width = Math.max(1, parseInt(body.width, 10) || 1600);
+  const height = Math.max(1, parseInt(body.height, 10) || 900);
+
+  try {
+    const base = (body.scene || '').replace(/\.(html|json)$/i, '') || '01-thumbnail';
+    const sceneJson = path.join(REPO_ROOT, 'scenes', `${base}.json`);
+    const controllers = buildControllers(body);
+    let html;
+
+    if (fs.existsSync(sceneJson)) {
+      // Map common aliases from body → scene keys (non-destructive)
+      const alias = {
+        addressBar: body.addressBar || body.url,
+        mainHeading: body.mainHeading || body.title,
+        subHeading: body.subHeading || body.subtitle,
+        brandIcon: body.brandIcon || body.icon,
+        browserScreenshot: body.browserScreenshot || body.image,
+        browserScreenshotLeft: body.browserScreenshotLeft || body.imageLeft,
+        browserScreenshotRight: body.browserScreenshotRight || body.imageRight,
+        theme: body.theme || body.background,
+        themeColor: body.themeColor || body.bgcolor,
+      };
+
+      // Pass through numbered step fields if present
+      for (let i = 1; i <= 4; i++) {
+        const bs = body[`browserScreenshot${i}`];
+        const sl = body[`stepLabel${i}`];
+        const st = body[`stepText${i}`];
+        if (bs) alias[`browserScreenshot${i}`] = bs;
+        if (sl) alias[`stepLabel${i}`] = sl;
+        if (st) alias[`stepText${i}`] = st;
+      }
+
+      // Drop null/undefined so we don’t overwrite JSON defaults
+      Object.keys(alias).forEach((k) => alias[k] == null && delete alias[k]);
+
+      // Combine controller-derived values with our alias map (alias wins)
+      const overrides = { ...controllers, ...alias };
+      html = buildSceneHtml({ sceneJsonPath: sceneJson, overrides });
+    } else {
+      // Legacy path usage
+      const scene = body.scene || 'scenes/01-thumbnail.html';
+      html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
+    }
+
+    // Optional background overrides via POST
+    const { bgStart, bgEnd, noiseOpacity } = body;
+    if (bgStart || bgEnd || noiseOpacity) {
+      const styleParts = [];
+      if (bgStart) styleParts.push(`--bg-start:${htmlEscape(bgStart)}`);
+      if (bgEnd) styleParts.push(`--bg-end:${htmlEscape(bgEnd)}`);
+      if (noiseOpacity) styleParts.push(`--noise-opacity:${htmlEscape(noiseOpacity)}`);
+      if (styleParts.length) {
+        const inline = styleParts.join(';');
+        html = html.replace('<body', `<body style="${inline}"`);
+      }
+    }
+
+    const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+    try {
+      const page = await browser.newPage();
+      await page.setViewport({ width, height });
+      await page.setContent(html, { waitUntil: 'networkidle0' });
+      const buffer = await page.screenshot({ type: 'png' });
+      res.setHeader('Content-Type', 'image/png');
+      res.send(buffer);
+    } finally {
+      await browser.close();
+    }
+  } catch (e) {
+    console.error('screenshot_failed', e);
+    res.status(500).json({ error: 'screenshot_failed', message: e.message });
+  }
 });
 
 // Default route: index with links to per-scene builders
