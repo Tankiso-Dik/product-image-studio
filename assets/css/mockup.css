@@ -383,8 +383,8 @@
 /* Larger, centered typography for Scene 03 */
 .scene-03 .main-heading{ font-size:56px; line-height:1.05; color:#f8fafc; }
 .scene-03 .sub-heading{ font-size:22px; line-height:1.4; color:#cbd5e1; }
-.scene-03 .bullet-list{ font-size:18px; line-height:1.5; }
-.scene-03 .bullet-list li{ margin-top:8px; }
+.scene-03 .bullet-list{ font-size:36px; line-height:1.4; }
+.scene-03 .bullet-list li{ margin-top:12px; }
 
 /* Allow Scene 03 to breathe wider than default container */
 .scene-03 .scene-container{ --container-max: 1200px; }
@@ -392,7 +392,7 @@
 @media (max-width: 900px){
   .scene-03 .main-heading{ font-size:44px; }
   .scene-03 .sub-heading{ font-size:18px; }
-  .scene-03 .bullet-list{ font-size:16px; }
+  .scene-03 .bullet-list{ font-size:32px; line-height:1.35; }
 }
 
 .scene-01 .heading-wrap { gap: 16px; }
