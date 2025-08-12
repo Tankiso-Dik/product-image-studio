@@ -116,29 +116,26 @@ app.get('/api/scenes', (_req, res) => {
 
 /* ---------- compose (GET) ---------- */
 /**
- * GET path supports a direct HTML scene path (e.g. scenes/01-thumbnail.html).
- * We:
- *  - default to 'scenes/01-thumbnail.html' if not provided
- *  - ensure the path resolves under /scenes
- *  - ensure the file exists
- *  - build using controllers from query
- *  - optionally apply bgStart/bgEnd/noiseOpacity
+ * GET uses an HTML scene path within /scenes (e.g. 01-thumbnail.html or scenes/01-thumbnail.html).
+ * - Ensures path stays under /scenes
+ * - Ensures file exists
+ * - Applies optional bgStart/bgEnd/noiseOpacity
  */
 app.get('/api/compose', (req, res) => {
   try {
-    const scene = req.query.scene || 'scenes/01-thumbnail.html';
-    const abs = path.resolve(REPO_ROOT, scene);
-    const scenesDir = path.join(REPO_ROOT, 'scenes');
+    const scenesRoot = path.join(REPO_ROOT, 'scenes');
+    const sceneParam = req.query.scene || '01-thumbnail.html';
+    const scenePath = path.join(scenesRoot, sceneParam);
 
-    if (!abs.startsWith(scenesDir)) {
-      return res.status(400).json({ error: 'invalid_scene' });
+    if (!scenePath.startsWith(scenesRoot + path.sep)) {
+      return res.status(400).json({ error: 'invalid_scene', message: 'Scene path escapes scenes/' });
     }
-    if (!fs.existsSync(abs)) {
+    if (!fs.existsSync(scenePath)) {
       return res.status(404).json({ error: 'scene_not_found' });
     }
 
     const controllers = buildControllers(req.query);
-    let html = buildSceneHtml({ sceneHtmlPath: abs, controllers });
+    let html = buildSceneHtml({ sceneHtmlPath: scenePath, controllers });
 
     const { bgStart, bgEnd, noiseOpacity } = req.query;
     if (bgStart || bgEnd || noiseOpacity) {
