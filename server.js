@@ -200,6 +200,7 @@ app.get('/', (_req, res) => {
       <li><a href="/tools/scene-01-builder.html">Scene 01 Builder (Single Screenshot)</a></li>
       <li><a href="/tools/scene-02-builder.html">Scene 02 Builder (Feature Spotlight)</a></li>
       <li><a href="/tools/scene-03-split-builder.html">Scene 03 Builder (Split Layout)</a></li>
+      <li><a href="/tools/scene-04-reverse-builder.html">Scene 04 Builder (Reverse Split)</a></li>
     </ul>
   </main>
 </body>

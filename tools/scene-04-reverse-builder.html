@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scene 04 Builder</title>
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/builder.css">
+  </head>
+  <body class="builder-page">
+    <main class="builder-container">
+      <h1 class="builder-title">Scene 04 — Reverse Split</h1>
+      <form class="builder-form" onsubmit="return false;">
+        <div class="field">
+          <label for="theme">Theme</label>
+          <input type="text" id="theme" placeholder="green | yellow | purple" value="green">
+        </div>
+        <div class="field">
+          <label for="url">URL (address bar)</label>
+          <input type="text" id="url" placeholder="example.com" value="example.com">
+        </div>
+        <div class="field">
+          <label for="title">Main Heading</label>
+          <input type="text" id="title" placeholder="Main heading" value="Balanced layout with copy">
+        </div>
+        <div class="field">
+          <label for="subtitle">Subheading</label>
+          <input type="text" id="subtitle" placeholder="Subheading" value="Screenshot left, text right">
+        </div>
+        <div class="field">
+          <label for="bodyText">Body Text</label>
+          <input type="text" id="bodyText" placeholder="Supporting paragraph instead of bullets" value="Use this area for a short paragraph explaining the feature or context.">
+        </div>
+        <div class="field">
+          <label for="image">Screenshot Path or URL</label>
+          <input type="text" id="image" placeholder="assets/screenshots/shot.png" value="assets/screenshots/placeholder.png">
+        </div>
+        <div class="field">
+          <label for="imageFile">Or pick a screenshot file</label>
+          <input type="file" id="imageFile" accept="image/*">
+        </div>
+        <div class="field two-col">
+          <div>
+            <label for="bgStart">Background Start (CSS color)</label>
+            <input type="text" id="bgStart" placeholder="#1e293b">
+          </div>
+          <div>
+            <label for="bgEnd">Background End (CSS color)</label>
+            <input type="text" id="bgEnd" placeholder="#0f172a">
+          </div>
+        </div>
+        <div class="field">
+          <label for="noise">Noise Opacity (0–0.1)</label>
+          <input type="number" id="noise" min="0" max="0.1" step="0.005" placeholder="0.03">
+          <div class="hint">Controls the subtle haze texture over the background.</div>
+        </div>
+        <div class="field">
+          <label for="outline">Frame Outline Color (CSS color)</label>
+          <input type="text" id="outline" placeholder="#ffffff or rgba(255,255,255,0.75)" value="rgba(255,255,255,0.75)">
+          <div class="hint">Controls the browser frame border color via CSS variable.</div>
+        </div>
+        <div class="actions">
+          <button id="applyBtn" type="button">Apply</button>
+          <a id="openScene" href="/scenes/04-reverse.html" target="_blank">Open Scene</a>
+        </div>
+      </form>
+    </main>
+    <script>
+      const q = (id)=>document.getElementById(id);
+      const toDataURL = (file)=> new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(file) });
+      async function payload(){
+        const p={
+          scene: '04-reverse',
+          theme: (q('theme').value||'').trim(),
+          addressBar: (q('url').value||'').trim(),
+          mainHeading: (q('title').value||'').trim(),
+          subHeading: (q('subtitle').value||'').trim(),
+          bodyText: (q('bodyText').value||'').trim(),
+          browserScreenshot: (q('image').value||'').trim(),
+          bgStart: (q('bgStart').value||'').trim(),
+          bgEnd: (q('bgEnd').value||'').trim(),
+          noiseOpacity: (q('noise').value||'').trim(),
+          outlineColor: (q('outline').value||'').trim()
+        };
+        const f=q('imageFile')?.files?.[0];
+        if(f){
+          try{ p.browserScreenshot=await toDataURL(f) }catch(e){}
+        }
+        return p;
+      }
+      q('applyBtn').addEventListener('click', async ()=>{
+        const body = await payload();
+        const res = await fetch('/api/compose', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+        const html = await res.text();
+        const compose = window.open('/scenes/04-reverse.html', '_blank');
+        const w = compose || window;
+        w.document.open();
+        w.document.write(html);
+        w.document.close();
+      });
+    </script>
+  </body>
+  </html>
+
