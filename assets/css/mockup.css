@@ -135,7 +135,8 @@
 
 /* Split layout utility */
 .layout-split{display:flex;align-items:center;gap:40px}
-@media (max-width:768px){
+/* Keep split layout side-by-side on most screens; stack only on narrow mobile */
+@media (max-width:640px){
   .layout-split{flex-direction:column;gap:24px}
 }
 
@@ -341,6 +342,9 @@
 .scene-03 .browser-mockup {
   flex: 1;
 }
+
+/* Ensure Scene 03 uses left text, right frame by default */
+.scene-03 .content-wrapper.layout-split{flex-direction:row; align-items:stretch}
 
 .scene-03 .bullet-list {
   margin-top: 16px;
