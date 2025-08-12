@@ -20,7 +20,7 @@ function renderSection(sec) {
 
   const rawProgress = Number.isFinite(sec.progress) ? Math.max(0, Math.min(100, sec.progress)) : null;
   const progress = rawProgress !== null
-    ? `<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"${rawProgress}\" aria-valuemin=\"0\" aria-valuemax=\"100\">\n         <div class=\"progress-fill\" style=\"--progress:${rawProgress}%\"></div>\n       </div>`
+    ? `<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"${htmlEscape(rawProgress)}\" aria-valuemin=\"0\" aria-valuemax=\"100\">\n         <div class=\"progress-fill\" style=\"--progress:${htmlEscape(rawProgress)}%\"></div>\n       </div>`
     : '';
 
   return `\n  <div class="dashboard-section">\n    <div class="section-header">\n      <span class="section-emoji">${htmlEscape(sec.emoji || '')}</span>\n      <span class="section-title">${htmlEscape(sec.title || '')}</span>\n    </div>\n    <div class="task-list">\n      ${tasks}\n    </div>\n    ${progress}\n  </div>`;
@@ -55,7 +55,7 @@ function replaceBrandIcon(html, data) {
   if (!Object.prototype.hasOwnProperty.call(data, 'brandIcon')) return html;
   return html.replace(
     /(<img[^>]*data-key="brandIcon"[^>]*src=")[^"]*(")/,
-    (_, a, b) => `${a}${data.brandIcon}${b}`
+    (_, a, b) => `${a}${htmlEscape(data.brandIcon)}${b}`
   );
 }
 
@@ -63,9 +63,10 @@ function replaceScreenshots(html, data, overrides = {}) {
   let out = html;
 
   const imgSrc = data.browserScreenshot || '../assets/screenshots/placeholder.png';
+  const escapedImgSrc = htmlEscape(imgSrc);
   out = out.replace(
     /(<img[^>]*class="[^"]*\bbrowser-screenshot\b[^"]*"(?![^>]*\bleft\b)(?![^>]*\bright\b)[^>]*src=")[^"]*(")/,
-    (_, a, b) => `${a}${imgSrc}${b}`
+    (_, a, b) => `${a}${escapedImgSrc}${b}`
   );
   const isPlaceholder = /placeholder\.png(?:$|\?|#)/.test(String(imgSrc));
   if (!/data-has-screenshot=/.test(out) && !isPlaceholder) {
@@ -80,7 +81,7 @@ function replaceScreenshots(html, data, overrides = {}) {
   if (data.browserScreenshotLeft) {
     out = out.replace(
       /(<img[^>]*data-key="browserScreenshotLeft"[^>]*src=")[^"]*(")/,
-      (_, a, b) => `${a}${data.browserScreenshotLeft}${b}`
+      (_, a, b) => `${a}${htmlEscape(data.browserScreenshotLeft)}${b}`
     );
     if (!/data-has-screenshot-left=/.test(out) && !/placeholder\.png/.test(String(data.browserScreenshotLeft))) {
       out = out.replace('<body', '<body data-has-screenshot-left="true"');
@@ -90,7 +91,7 @@ function replaceScreenshots(html, data, overrides = {}) {
   if (data.browserScreenshotRight) {
     out = out.replace(
       /(<img[^>]*data-key="browserScreenshotRight"[^>]*src=")[^"]*(")/,
-      (_, a, b) => `${a}${data.browserScreenshotRight}${b}`
+      (_, a, b) => `${a}${htmlEscape(data.browserScreenshotRight)}${b}`
     );
     if (!/data-has-screenshot-right=/.test(out) && !/placeholder\.png/.test(String(data.browserScreenshotRight))) {
       out = out.replace('<body', '<body data-has-screenshot-right="true"');
@@ -101,7 +102,7 @@ function replaceScreenshots(html, data, overrides = {}) {
     const key = `browserScreenshot${i}`;
     if (data[key]) {
       const re = new RegExp(`(<img[^>]*data-key=\"${key}\"[^>]*src=\")[^\"]*(\")`);
-      out = out.replace(re, (_, a, b) => `${a}${data[key]}${b}`);
+      out = out.replace(re, (_, a, b) => `${a}${htmlEscape(data[key])}${b}`);
       const flag = `data-has-screenshot-${i}`;
       if (!new RegExp(flag).test(out) && !/placeholder\.png/.test(String(data[key]))) {
         out = out.replace('<body', `<body ${flag}="true"`);
