@@ -336,19 +336,30 @@
 .scene-02 .floating-orb,.scene-02 .orb-1,.scene-02 .orb-2{display:none!important}
 
 .scene-03 .text-column {
-  flex: 1;
+  /* Give text less width; center contents */
+  flex: 0 0 42%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
 }
 
 .scene-03 .browser-mockup {
-  flex: 1;
+  /* Make the frame more dominant */
+  flex: 0 0 58%;
 }
 
 /* Ensure Scene 03 uses left text, right frame by default */
-.scene-03 .content-wrapper.layout-split{flex-direction:row; align-items:stretch}
+.scene-03 .content-wrapper.layout-split{flex-direction:row; align-items:center}
 
 .scene-03 .bullet-list {
   margin-top: 16px;
   padding-left: 20px;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .scene-03 .bullet-list li {
@@ -364,6 +375,17 @@
   opacity:0; transition:opacity .35s ease;
 }
 .scene-03 [data-visible="true"].browser-screenshot{opacity:1}
+
+/* Maximize visual weight on the frame column */
+.scene-03 .screenshot-wrap{ width:100%; }
+
+/* Larger, centered typography for Scene 03 */
+.scene-03 .main-heading{ font-size:56px; line-height:1.05; color:#f8fafc; }
+.scene-03 .sub-heading{ font-size:18px; color:#cbd5e1; }
+
+@media (max-width: 900px){
+  .scene-03 .main-heading{ font-size:44px; }
+}
 
 .scene-01 .heading-wrap { gap: 16px; }
 
