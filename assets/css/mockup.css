@@ -356,6 +356,15 @@
 /* Ensure Scene 03 uses left text, right frame by default */
 .scene-03 .content-wrapper.layout-split{flex-direction:row; align-items:center}
 
+/* Scene 04: reverse split (frame left, text right) */
+.scene-04 .content-wrapper.layout-split{flex-direction:row; align-items:center}
+.scene-04 .browser-mockup{flex:0 0 58%; max-width:1100px; box-shadow:0 40px 80px rgba(0,0,0,0.18), 0 20px 40px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.06)}
+.scene-04 .browser-mockup::before{background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0) 40%)}
+.scene-04 .text-column{flex:0 0 42%; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; gap:10px}
+.scene-04 .main-heading{font-size:56px; line-height:1.05; color:#f8fafc}
+.scene-04 .sub-heading{font-size:22px; line-height:1.4; color:#cbd5e1}
+@media (prefers-color-scheme: dark){.scene-04 .browser-mockup{border:1px solid rgba(255,255,255,0.15)}}
+
 .scene-03 .bullet-list {
   margin-top: 16px;
   padding-left: 20px;
