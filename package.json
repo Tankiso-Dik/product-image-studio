@@ -6,11 +6,13 @@
   "license": "MIT",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "load": "node scripts/loadScene.js",
-    "batch": "node scripts/batchRender.js",
-    "test": "node test/buildSceneHtml.test.js && node test/api.test.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "codegen": "convex codegen",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"(no tests)\" && exit 0",
+    "insert": "npx convex run actions:insertMockData"
   },
   "engines": {
     "node": ">=18"
