@@ -1,6 +1,4 @@
 node_modules
-.next
-.env*
 output/
 *.temp.html
 *.png
