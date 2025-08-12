@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
-const puppeteer = require('puppeteer');
 
 // Keep both exports available from buildSceneHtml; htmlEscape may be used by callers later.
 // eslint-disable-next-line no-unused-vars
@@ -175,39 +174,6 @@ app.post('/api/compose', (req, res) => {
     }
     console.error('POST /api/compose failed:', e);
     res.status(500).json({ error: 'compose_failed', message: e.message });
-  }
-});
-
-/* ---------- screenshot (POST) ---------- */
-/**
- * Renders a screenshot (PNG) from the composed HTML.
- * Accepts: { scene, width, height, ...overrides }
- */
-app.post('/api/screenshot', async (req, res) => {
-  try {
-    const width = Number(req.body?.width) || 1600;
-    const height = Number(req.body?.height) || 900;
-
-    const html = composeHtmlFromBody(req.body || {});
-    const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
-    const page = await browser.newPage();
-    await page.setViewport({ width, height });
-    await page.setContent(html, { waitUntil: 'networkidle0' });
-    const raw = await page.screenshot({ type: 'png' });
-    await browser.close();
-
-    const buf = Buffer.isBuffer(raw) ? raw : Buffer.from(raw);
-    res.setHeader('Content-Type', 'image/png');
-    res.send(buf);
-  } catch (e) {
-    if (e.code === 'INVALID_SCENE') {
-      return res.status(400).json({ error: 'invalid_scene' });
-    }
-    if (e.code === 'SCENE_NOT_FOUND') {
-      return res.status(404).json({ error: 'scene_not_found' });
-    }
-    console.error('POST /api/screenshot failed:', e);
-    res.status(500).json({ error: 'screenshot_failed', message: e.message });
   }
 });
 
