@@ -12,12 +12,21 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const REPO_ROOT = process.cwd();
 
+/* ---------- helpers ---------- */
+
 function safeSceneBase(name) {
   const base = (name || '').replace(/\.(html|json)$/i, '');
   if (!base || base.includes('..') || /[\/]/.test(base)) return null;
   return base;
 }
 
+/**
+ * Compose full HTML from POST body.
+ * - Defaults to base '01-thumbnail' if scene not provided.
+ * - Validates scene JSON existence.
+ * - Merges controller values + alias overrides.
+ * - Applies optional inline CSS vars (bgStart/bgEnd/noiseOpacity).
+ */
 function composeHtmlFromBody(body = {}) {
   const baseInput = body.scene;
   const base = baseInput ? safeSceneBase(baseInput) : '01-thumbnail';
@@ -26,13 +35,17 @@ function composeHtmlFromBody(body = {}) {
     err.code = 'INVALID_SCENE';
     throw err;
   }
+
   const sceneJson = path.join(REPO_ROOT, 'scenes', `${base}.json`);
   if (!fs.existsSync(sceneJson)) {
     const err = new Error('scene_not_found');
     err.code = 'SCENE_NOT_FOUND';
     throw err;
   }
+
   const controllers = buildControllers(body);
+
+  // Non-destructive alias map for common fields
   const alias = {
     addressBar: body.addressBar || body.url,
     mainHeading: body.mainHeading || body.title,
@@ -53,8 +66,11 @@ function composeHtmlFromBody(body = {}) {
     if (st) alias[`stepText${i}`] = st;
   }
   Object.keys(alias).forEach((k) => alias[k] == null && delete alias[k]);
+
   const overrides = { ...controllers, ...alias };
   let html = buildSceneHtml({ sceneJsonPath: sceneJson, overrides });
+
+  // Optional inline theme vars
   const { bgStart, bgEnd, noiseOpacity } = body;
   if (bgStart || bgEnd || noiseOpacity) {
     const styleParts = [];
@@ -66,22 +82,24 @@ function composeHtmlFromBody(body = {}) {
       html = html.replace('<body', `<body style="${inline}"`);
     }
   }
+
   return html;
 }
 
-// Parse JSON bodies for POST endpoints
-app.use(express.json({ limit: '12mb' }));
+/* ---------- middleware & static ---------- */
 
-// Static files: serve project assets and scenes
+app.use(express.json({ limit: '12mb' }));
 app.use('/assets', express.static(path.join(REPO_ROOT, 'assets')));
 app.use('/scenes', express.static(path.join(REPO_ROOT, 'scenes')));
 app.use('/tools', express.static(path.join(REPO_ROOT, 'tools')));
 app.use('/output', express.static(path.join(REPO_ROOT, 'output')));
 
-// Health
+/* ---------- health ---------- */
+
 app.get('/healthz', (_req, res) => res.json({ ok: true }));
 
-// List available scenes (bases with both .html and .json)
+/* ---------- list scenes ---------- */
+
 app.get('/api/scenes', (_req, res) => {
   try {
     const scenesDir = path.join(REPO_ROOT, 'scenes');
@@ -96,40 +114,56 @@ app.get('/api/scenes', (_req, res) => {
   }
 });
 
-// Compose endpoint (GET): returns filled HTML based on query params
+/* ---------- compose (GET) ---------- */
+/**
+ * GET path supports a direct HTML scene path (e.g. scenes/01-thumbnail.html).
+ * We:
+ *  - default to 'scenes/01-thumbnail.html' if not provided
+ *  - ensure the path resolves under /scenes
+ *  - ensure the file exists
+ *  - build using controllers from query
+ *  - optionally apply bgStart/bgEnd/noiseOpacity
+ */
 app.get('/api/compose', (req, res) => {
-  const scene = req.query.scene || 'scenes/01-thumbnail.html';
-  const abs = path.resolve(REPO_ROOT, scene);
-  const scenesDir = path.join(REPO_ROOT, 'scenes');
-  if (!abs.startsWith(scenesDir)) {
-    return res.status(400).json({ error: 'invalid_scene' });
-  }
-  if (!fs.existsSync(abs)) {
-    return res.status(404).json({ error: 'scene_not_found' });
-  }
-  const controllers = buildControllers(req.query);
-  let html = buildSceneHtml({ sceneHtmlPath: abs, controllers });
+  try {
+    const scene = req.query.scene || 'scenes/01-thumbnail.html';
+    const abs = path.resolve(REPO_ROOT, scene);
+    const scenesDir = path.join(REPO_ROOT, 'scenes');
 
-  // Optional background overrides via query
-  const bgStart = req.query.bgStart;
-  const bgEnd = req.query.bgEnd;
-  const noiseOpacity = req.query.noiseOpacity;
-  if (bgStart || bgEnd || noiseOpacity) {
-    const styleParts = [];
-    if (bgStart) styleParts.push(`--bg-start:${htmlEscape(bgStart)}`);
-    if (bgEnd) styleParts.push(`--bg-end:${htmlEscape(bgEnd)}`);
-    if (noiseOpacity) styleParts.push(`--noise-opacity:${htmlEscape(noiseOpacity)}`);
-    if (styleParts.length) {
-      const inline = styleParts.join(';');
-      html = html.replace('<body', `<body style="${inline}"`);
+    if (!abs.startsWith(scenesDir)) {
+      return res.status(400).json({ error: 'invalid_scene' });
     }
-  }
+    if (!fs.existsSync(abs)) {
+      return res.status(404).json({ error: 'scene_not_found' });
+    }
 
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.send(html);
+    const controllers = buildControllers(req.query);
+    let html = buildSceneHtml({ sceneHtmlPath: abs, controllers });
+
+    const { bgStart, bgEnd, noiseOpacity } = req.query;
+    if (bgStart || bgEnd || noiseOpacity) {
+      const styleParts = [];
+      if (bgStart) styleParts.push(`--bg-start:${htmlEscape(bgStart)}`);
+      if (bgEnd) styleParts.push(`--bg-end:${htmlEscape(bgEnd)}`);
+      if (noiseOpacity) styleParts.push(`--noise-opacity:${htmlEscape(noiseOpacity)}`);
+      if (styleParts.length) {
+        const inline = styleParts.join(';');
+        html = html.replace('<body', `<body style="${inline}"`);
+      }
+    }
+
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(html);
+  } catch (e) {
+    console.error('GET /api/compose failed:', e);
+    res.status(500).json({ error: 'compose_failed', message: e.message });
+  }
 });
 
-// Compose endpoint (POST): supports scene base + overrides from body
+/* ---------- compose (POST) ---------- */
+/**
+ * POST path uses JSON scene base with defaults + safe validation in composeHtmlFromBody.
+ */
 app.post('/api/compose', (req, res) => {
   try {
     const html = composeHtmlFromBody(req.body || {});
@@ -142,14 +176,21 @@ app.post('/api/compose', (req, res) => {
     if (e.code === 'SCENE_NOT_FOUND') {
       return res.status(404).json({ error: 'scene_not_found' });
     }
+    console.error('POST /api/compose failed:', e);
     res.status(500).json({ error: 'compose_failed', message: e.message });
   }
 });
 
+/* ---------- screenshot (POST) ---------- */
+/**
+ * Renders a screenshot (PNG) from the composed HTML.
+ * Accepts: { scene, width, height, ...overrides }
+ */
 app.post('/api/screenshot', async (req, res) => {
   try {
     const width = Number(req.body?.width) || 1600;
     const height = Number(req.body?.height) || 900;
+
     const html = composeHtmlFromBody(req.body || {});
     const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
@@ -157,6 +198,7 @@ app.post('/api/screenshot', async (req, res) => {
     await page.setContent(html, { waitUntil: 'networkidle0' });
     const raw = await page.screenshot({ type: 'png' });
     await browser.close();
+
     const buf = Buffer.isBuffer(raw) ? raw : Buffer.from(raw);
     res.setHeader('Content-Type', 'image/png');
     res.send(buf);
@@ -167,11 +209,13 @@ app.post('/api/screenshot', async (req, res) => {
     if (e.code === 'SCENE_NOT_FOUND') {
       return res.status(404).json({ error: 'scene_not_found' });
     }
+    console.error('POST /api/screenshot failed:', e);
     res.status(500).json({ error: 'screenshot_failed', message: e.message });
   }
 });
 
-// Default route: index with links to per-scene builders
+/* ---------- index ---------- */
+
 app.get('/', (_req, res) => {
   res
     .type('html')
@@ -197,6 +241,8 @@ app.get('/', (_req, res) => {
 </html>`
     );
 });
+
+/* ---------- listen / export ---------- */
 
 if (require.main === module) {
   app.listen(PORT, () => {
