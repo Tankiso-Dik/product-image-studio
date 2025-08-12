@@ -40,9 +40,23 @@ app.get('/api/scenes', (_req, res) => {
 
 // Compose endpoint (GET): returns filled HTML based on query params
 app.get('/api/compose', (req, res) => {
-  const scene = req.query.scene || 'scenes/01-thumbnail.html';
+  const scene = req.query.scene;
+  if (typeof scene !== 'string' || !scene.trim()) {
+    return res.status(400).json({ error: 'scene_required' });
+  }
+  const scenePath = path.join(REPO_ROOT, scene);
+  if (!fs.existsSync(scenePath)) {
+    return res.status(404).json({ error: 'scene_not_found' });
+  }
+
   const controllers = buildControllers(req.query);
-  let html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
+  let html;
+  try {
+    html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
+  } catch (e) {
+    console.error('Failed to build scene from HTML (GET /api/compose)', e);
+    return res.status(404).json({ error: 'scene_not_found' });
+  }
 
   // Optional background overrides via query
   const bgStart = req.query.bgStart;
@@ -66,8 +80,10 @@ app.get('/api/compose', (req, res) => {
 // Compose endpoint (POST): supports scene base + overrides from body
 app.post('/api/compose', (req, res) => {
   const body = req.body || {};
-  // Support new scene base usage: body.scene like '01-thumbnail'
-  const base = (body.scene || '').replace(/\.(html|json)$/i, '') || '01-thumbnail';
+  if (typeof body.scene !== 'string' || !body.scene.trim()) {
+    return res.status(400).json({ error: 'scene_required' });
+  }
+  const base = body.scene.replace(/\.(html|json)$/i, '');
   const sceneJson = path.join(REPO_ROOT, 'scenes', `${base}.json`);
   const controllers = buildControllers(body);
 
@@ -101,7 +117,13 @@ app.post('/api/compose', (req, res) => {
     // Combine controller-derived values with our alias map (alias wins)
     const overrides = { ...controllers, ...alias };
 
-    let html = buildSceneHtml({ sceneJsonPath: sceneJson, overrides });
+    let html;
+    try {
+      html = buildSceneHtml({ sceneJsonPath: sceneJson, overrides });
+    } catch (e) {
+      console.error('Failed to build scene from JSON (POST /api/compose)', e);
+      return res.status(404).json({ error: 'scene_not_found' });
+    }
     // Optional background overrides via POST
     const { bgStart, bgEnd, noiseOpacity } = body;
     if (bgStart || bgEnd || noiseOpacity) {
@@ -119,8 +141,18 @@ app.post('/api/compose', (req, res) => {
   }
 
   // Fallback legacy path usage
-  const scene = body.scene || 'scenes/01-thumbnail.html';
-  let html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
+  const scene = body.scene;
+  const scenePath = path.join(REPO_ROOT, scene);
+  if (!fs.existsSync(scenePath)) {
+    return res.status(404).json({ error: 'scene_not_found' });
+  }
+  let html;
+  try {
+    html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
+  } catch (e) {
+    console.error('Failed to build scene from HTML (POST /api/compose)', e);
+    return res.status(404).json({ error: 'scene_not_found' });
+  }
   const { bgStart, bgEnd, noiseOpacity } = body;
   if (bgStart || bgEnd || noiseOpacity) {
     const styleParts = [];
