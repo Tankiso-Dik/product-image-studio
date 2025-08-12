@@ -10,7 +10,7 @@
     "dev": "node server.js",
     "load": "node scripts/loadScene.js",
     "batch": "node scripts/batchRender.js",
-    "test": "node test/buildSceneHtml.test.js"
+    "test": "node test/buildSceneHtml.test.js && node test/api.test.js"
   },
   "engines": {
     "node": ">=18"
@@ -18,6 +18,10 @@
   "dependencies": {
     "express": "^4.19.2",
     "puppeteer": "^23.3.0"
+  },
+  "devDependencies": {
+    "pngjs": "^7.0.0",
+    "supertest": "^6.3.3"
   }
 }
 
