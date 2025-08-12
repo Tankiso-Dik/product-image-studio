@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scene 04 - Reverse Split</title>
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <link rel="stylesheet" href="../assets/css/mockup.css" />
+</head>
+<body data-theme="green" class="scene-04">
+  <div class="scene-container">
+
+    <!-- Theme dots -->
+    <div class="theme-controls" data-key="theme">
+      <div class="theme-toggle">
+        <div class="theme-dot green active"></div>
+        <div class="theme-dot yellow"></div>
+        <div class="theme-dot purple"></div>
+      </div>
+    </div>
+
+    <div class="content-wrapper layout-split">
+      <!-- Browser frame on the left -->
+      <div class="browser-mockup">
+        <div class="browser-chrome">
+          <div class="window-controls">
+            <div class="window-control close"></div>
+            <div class="window-control minimize"></div>
+            <div class="window-control maximize"></div>
+          </div>
+          <input
+            type="text"
+            class="address-bar"
+            data-key="addressBar"
+            value="example.com"
+            readonly
+            aria-label="Address bar"
+          >
+        </div>
+        <div class="screenshot-wrap">
+          <img class="browser-screenshot shot--bottom-radius shot--shadow shot--fade" data-visible="true" data-key="browserScreenshot" src="../assets/screenshots/placeholder.png" alt="Screenshot" />
+        </div>
+      </div>
+
+      <!-- Text on the right -->
+      <div class="text-column">
+        <h1 class="main-heading" data-key="mainHeading">Main heading</h1>
+        <p class="sub-heading" data-key="subHeading">Subheading</p>
+        <p class="sub-heading" data-key="bodyText">This is a normal paragraph of supporting text rather than bullet points. Keep it concise and focused.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

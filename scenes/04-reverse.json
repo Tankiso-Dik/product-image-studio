@@ -1,0 +1,9 @@
+{
+  "theme": "green",
+  "addressBar": "example.com",
+  "browserScreenshot": "../assets/screenshots/placeholder.png",
+  "mainHeading": "Balanced layout with copy",
+  "subHeading": "Screenshot left, text right",
+  "bodyText": "Use this area for a short paragraph explaining the feature or context. This replaces bullet points with flowing text for a calmer read."
+}
+

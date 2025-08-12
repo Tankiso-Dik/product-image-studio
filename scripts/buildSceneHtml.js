@@ -187,6 +187,7 @@ function applyReplacements(html, data, overrides) {
   out = replaceSections(out, data);
   // Scene-specific simple swaps
   out = replaceByDataKey(out, data, 'pageTitle');
+  out = replaceByDataKey(out, data, 'bodyText');
   out = replaceBullets(out, data);
   out = ensureBaseHref(out);
   return out;
