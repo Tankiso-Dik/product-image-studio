@@ -383,7 +383,7 @@
 /* Larger, centered typography for Scene 03 */
 .scene-03 .main-heading{ font-size:56px; line-height:1.05; color:#f8fafc; }
 .scene-03 .sub-heading{ font-size:22px; line-height:1.4; color:#cbd5e1; }
-.scene-03 .bullet-list{ font-size:36px; line-height:1.4; }
+.scene-03 .bullet-list{ font-size:36px; line-height:1.4; color:#f8fafc; }
 .scene-03 .bullet-list li{ margin-top:12px; }
 
 /* Allow Scene 03 to breathe wider than default container */
