@@ -347,9 +347,10 @@
 }
 
 .scene-03 .browser-mockup {
-  /* Make the frame more dominant */
+  /* Make the frame more dominant and give it S1 polish */
   flex: 0 0 64%;
   max-width: 1100px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.18), 0 20px 40px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.06);
 }
 
 /* Ensure Scene 03 uses left text, right frame by default */
@@ -393,6 +394,17 @@
   .scene-03 .main-heading{ font-size:44px; }
   .scene-03 .sub-heading{ font-size:18px; }
   .scene-03 .bullet-list{ font-size:32px; line-height:1.35; }
+}
+
+/* S1-style glass overlay at the top edge of the frame */
+.scene-03 .browser-mockup::before {
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0) 40%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .scene-03 .browser-mockup {
+    border: 1px solid rgba(255,255,255,0.15);
+  }
 }
 
 .scene-01 .heading-wrap { gap: 16px; }
