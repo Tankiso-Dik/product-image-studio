@@ -40,9 +40,14 @@ app.get('/api/scenes', (_req, res) => {
 
 // Compose endpoint (GET): returns filled HTML based on query params
 app.get('/api/compose', (req, res) => {
-  const scene = req.query.scene || 'scenes/01-thumbnail.html';
+  const scenesRoot = path.join(REPO_ROOT, 'scenes');
+  const sceneParam = req.query.scene || '01-thumbnail.html';
+  const scenePath = path.join(scenesRoot, sceneParam);
+  if (!scenePath.startsWith(scenesRoot + path.sep)) {
+    return res.status(400).json({ error: 'invalid_scene', message: 'Scene path escapes scenes/' });
+  }
   const controllers = buildControllers(req.query);
-  let html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
+  let html = buildSceneHtml({ sceneHtmlPath: scenePath, controllers });
 
   // Optional background overrides via query
   const bgStart = req.query.bgStart;
@@ -66,9 +71,13 @@ app.get('/api/compose', (req, res) => {
 // Compose endpoint (POST): supports scene base + overrides from body
 app.post('/api/compose', (req, res) => {
   const body = req.body || {};
+  const scenesRoot = path.join(REPO_ROOT, 'scenes');
   // Support new scene base usage: body.scene like '01-thumbnail'
   const base = (body.scene || '').replace(/\.(html|json)$/i, '') || '01-thumbnail';
-  const sceneJson = path.join(REPO_ROOT, 'scenes', `${base}.json`);
+  const sceneJson = path.join(scenesRoot, `${base}.json`);
+  if (!sceneJson.startsWith(scenesRoot + path.sep)) {
+    return res.status(400).json({ error: 'invalid_scene', message: 'Scene path escapes scenes/' });
+  }
   const controllers = buildControllers(body);
 
   if (fs.existsSync(sceneJson)) {
@@ -119,8 +128,12 @@ app.post('/api/compose', (req, res) => {
   }
 
   // Fallback legacy path usage
-  const scene = body.scene || 'scenes/01-thumbnail.html';
-  let html = buildSceneHtml({ repoRoot: REPO_ROOT, sceneHtmlPath: scene, controllers });
+  const sceneParam = body.scene || '01-thumbnail.html';
+  const scenePath = path.join(scenesRoot, sceneParam);
+  if (!scenePath.startsWith(scenesRoot + path.sep)) {
+    return res.status(400).json({ error: 'invalid_scene', message: 'Scene path escapes scenes/' });
+  }
+  let html = buildSceneHtml({ sceneHtmlPath: scenePath, controllers });
   const { bgStart, bgEnd, noiseOpacity } = body;
   if (bgStart || bgEnd || noiseOpacity) {
     const styleParts = [];
